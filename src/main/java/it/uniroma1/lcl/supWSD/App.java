@@ -11,8 +11,6 @@ public class App {
 
 		final String usage = "Usage: train|test config.xml corpus.xml keys.key";
 		String command, corpus, conf, keys;
-
-		args=test();
 		
 		try {
 
@@ -44,16 +42,4 @@ public class App {
 		return (args[0].equals("train") && length == 4) || (args[0].equals("test") && (length == 3 || length == 4));
 	}
 	
-	private static String[] train() {
-
-		return new String[] { "train", "supWSD.xml", "C:\\Users\\Simone\\workspace\\supWSD\\train\\semcor3.0.xml","C:\\Users\\Simone\\workspace\\supWSD\\train\\semcor3.0.key" };
-
-	}
-	
-	private static String[] test() {
-
-
-		return new String[] { "test", "supWSD.xml", "C:\\Users\\Simone\\workspace\\supWSD\\test\\semeval2013.xml", "C:\\Users\\Simone\\workspace\\supWSD\\test\\semeval2013.key" };
-
-	}
 }
