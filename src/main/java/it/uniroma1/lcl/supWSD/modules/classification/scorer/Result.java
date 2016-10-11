@@ -58,7 +58,7 @@ public class Result implements Comparable<Result> {
 
 		String cls= getFirstAnswerClass();
 		
-		return cls!=null && mSenses.contains(cls);
+		return cls!=null && (mSenses==null ||mSenses.contains(cls));
 	}
 	
 	public  Answer getFirstAnswer() {

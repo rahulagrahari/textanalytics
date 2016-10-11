@@ -46,13 +46,12 @@ class PlainWriter extends Writer {
 
 			word = instance.getWord();
 			result = iterator.next();
-
+			line += "<" + TAG;
+			
 			if (result.hasLegalAnswer())
-				line += "<" + TAG + " " + String.join(" ", result.getAnswers()) + ">" + word + "</" + TAG + ">";
-			else
-				line += word;
+				line += " " + String.join(" ", result.getAnswers());
 
-			line += " ";
+			line += ">" + word + "</" + TAG + "> ";
 		}
 
 		writeResult(line.trim());

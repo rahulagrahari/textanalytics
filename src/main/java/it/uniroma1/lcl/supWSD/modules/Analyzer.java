@@ -128,7 +128,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 						id = lexel.getID();
 						senses = getSenses(id);
 
-						if (senses != null) {// throw new Exception("No sense
+						//if (senses != null) {// throw new Exception("No sense
 												// for
 												// instance id "+id);
 							for (String name : names) {
@@ -143,7 +143,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 
 								ambiguity.add(id, token.getWord(), thread.mFeatures.get(lexel), senses);
 							}
-						}
+						
 
 					}
 
@@ -168,12 +168,12 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 
 	protected final SortedSet<String> getSenses(String id) {
 
-		return mSenses.get(id);
+		return mSenses==null?null:mSenses.get(id);
 	}
 
 	protected final int getSensesCount() {
 
-		return mSenses.size();
+		return mSenses==null?0:mSenses.size();
 	}
 
 	private class SentenceThread implements Callable<SentenceThread> {

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.Vector;
-
 import it.uniroma1.lcl.supWSD.modules.extraction.features.Feature;
 
 /**
@@ -24,21 +22,21 @@ public abstract class Ambiguity {
 	private int mExamplesCount = 0;
 	protected int mFeaturesCount = 0;
 	private final String mLexel;
-	
+
 	public Ambiguity(String lexel) {
 
-		this.mLexel=lexel;
+		this.mLexel = lexel;
 		this.mInstances = new ArrayList<Instance>();
 		this.mStatistic = new HashMap<String, TermsVector>();
 		this.mSenses = new ArrayList<String>();
 
 	}
 
-	public String getLexel(){
-		
+	public String getLexel() {
+
 		return mLexel;
 	}
-	
+
 	public final void add(String id, String word, Collection<Feature> features, SortedSet<String> senses) {
 
 		int index;
@@ -56,28 +54,24 @@ public abstract class Ambiguity {
 
 				mFeaturesCount = Math.max(mFeaturesCount, index);
 				feature.setIndex(index);
-				
+
 			} else
 				featureIter.remove();
 		}
 
-		for (String sense : senses)
-			if (!mSenses.contains(sense))
-				mSenses.add(sense);
+		if (senses != null) {
+			for (String sense : senses)
+				if (!mSenses.contains(sense))
+					mSenses.add(sense);
 
-		mExamplesCount += senses.size();
+			mExamplesCount += senses.size();
+		}
+
 		mInstances.add(new Instance(id, word, features, senses));
-		
-	}
 
-	public void merge(List<Instance> instances) {
-
-		for (Instance instance : instances)
-			this.add(instance.getID(), instance.getWord(), new Vector<Feature>(instance.getFeatures()), instance.getSenses());
 	}
 
 	protected abstract int addFeature(Feature feature);
-
 
 	public List<String> getSenses() {
 
@@ -122,7 +116,7 @@ public abstract class Ambiguity {
 	public void dispose() {
 
 		this.mStatistic.clear();
-		this.mInstances.clear();
+		// this.mInstances.clear();
 		this.mSenses.clear();
 	}
 
@@ -144,7 +138,7 @@ public abstract class Ambiguity {
 
 		return this.getLexel().hashCode();
 	}
-	
+
 	@Override
 	public String toString() {
 

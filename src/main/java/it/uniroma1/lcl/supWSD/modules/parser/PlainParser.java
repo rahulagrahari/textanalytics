@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
 import it.uniroma1.lcl.supWSD.data.Annotation;
 import it.uniroma1.lcl.supWSD.data.Lexel;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.tokenizer.Tokenizer;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.tokenizer.TokenizerFactory;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.tokenizer.TokenizerType;
 
 /**
  * @author Simone Papandrea
@@ -31,15 +33,18 @@ public class PlainParser extends Parser {
 		Annotation annotation;
 		String line;
 		int count = 0;
-
+		Tokenizer tokenizer = null; 
+		
 		try {
 
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-
+			tokenizer=TokenizerFactory.getInstance().getTokenizer(TokenizerType.STANFORD,null);
+			tokenizer.load();
+				
 			while ((line = reader.readLine()) != null) {
 
 				annotations = new ArrayList<Annotation>();
-				annotation = parseLine(line, count);
+				annotation = parseLine(tokenizer.tokenize(line),count);
 				annotations.add(annotation);
 				count += annotation.getLexelsCount();
 				this.mParserListener.annotationsReady(annotations);
@@ -47,6 +52,9 @@ public class PlainParser extends Parser {
 
 		} finally {
 
+			if(tokenizer!=null)
+				tokenizer.unload();
+			
 			if (reader != null)
 				try {
 					reader.close();
@@ -56,15 +64,13 @@ public class PlainParser extends Parser {
 
 	}
 
-	private Annotation parseLine(String line, int id) {
+	private Annotation parseLine(String tokens[], int id) {
 
 		Annotation annotation;
 		String sentence="", word;
-		String tokens[];
 		int length, min;
 		List<Lexel> lexels;
-
-		tokens = line.split("\\s|\\t|\\n|\\r|\\f");
+	
 		length = tokens.length;
 		lexels = new ArrayList<Lexel>();
 
@@ -76,11 +82,11 @@ public class PlainParser extends Parser {
 			for (int j = 0; j < min; j++) {
 
 				word += tokens[i + j];
-				lexels.add(new Lexel(String.valueOf(id++), word));
+				lexels.add(new Lexel(String.format("%010d", id++), word));
 				word += "_";
 			}
 
-			sentence += Annotation.ANNOTATION_TAG + tokens[i] + " ";
+			sentence += Annotation.ANNOTATION_TAG + tokens[i] + Annotation.ANNOTATION_TAG+" ";
 		}
 
 		annotation = new Annotation(sentence.trim());

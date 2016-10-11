@@ -31,12 +31,8 @@ public class MNSFactory {
 		switch (parserType) {
 
 		case SENSEVAL:
-
-			mns = new SensEvalMNS(mnsFile);
-			break;
-
 		case PLAIN:
-
+			mns = new SensEvalMNS(mnsFile);
 			break;
 
 		default:
