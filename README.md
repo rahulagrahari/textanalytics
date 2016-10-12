@@ -2,9 +2,9 @@
 supWSD is a supervised word sense disambiguation system.  The flexible framework of supWSD allows users to combine different preprocessing modules, to select features extractors and choose which classifier to use. SupWSD is very light and has very small memory requirements; it provides a simple xml file to configure the system.
 
 ## Files & Directories
-- config : Babelnet configuration folder, containing the properties files.
-- lib    : Babelnet libraries folder, containing all the necessary .jar files.
-- models :
+- config  : Babelnet configuration folder, containing the properties files.
+- lib     : Babelnet libraries folder, containing all the necessary .jar files.
+- models  : 
 
 ## Install
 
