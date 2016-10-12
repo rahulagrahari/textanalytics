@@ -6,7 +6,9 @@ Name | Description
 ------------ | -------------
 config | Babelnet configuration folder, containing the properties files.
 lib | Babelnet libraries folder, containing all the necessary .jar files.
-models |  
+models |  folder contains the models of the preprocessing components.
+resource | folder contains the lexical semantic resources (sense inventories) 
+
 
 ## Install
 
