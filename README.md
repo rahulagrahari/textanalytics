@@ -20,7 +20,7 @@ supWSD.xsd | supWSD.xml schema definition. This file describes the elements in s
 
 ## Requirement
 1. This software requires java 8 (JRE 1.8) or higher version.
-2. Since supWSD uses JWNL for accessing WordNet, you must define the path of the Wordnet dictionary. In resources/wndictionary/prop.xml you can find this line "<param name="dictionary_path" value="dict" />" ; the value "dict" specifies the path of the WordNet dictionary.
+2. Since supWSD uses JWNL for accessing WordNet, you must define the path of the Wordnet dictionary. In resources/wndictionary/prop.xml you can find this line ```xml<param name="dictionary_path" value="dict" />``` : the value "dict" specifies the path of the WordNet dictionary.
 
 ## Configuration
 
