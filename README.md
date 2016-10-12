@@ -26,7 +26,7 @@ supWSD configuration file allows to tune the entire disambiguation process:
 
 Tag | Attribute | Meaning
 ------------ | ------------- | -------------
-working_directory |  | directory where the results will be saved (models, stats and scores).
+working_directory |  | the location where the results will be saved (models, stats and scores).
 parser | mns | dataset parser; supWSD has 5 different parser types: lexical ,senseval, semeval7 ,semeval13 ,semeval15 and plain. You can also implement and integrate a new parser. **MNS** is the path to the file containing the lexelt informantion of testing instances.
 
 # License
