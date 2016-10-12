@@ -15,14 +15,19 @@ pom.xml | Maven configuration file.
 supWSD.xml | supWSD configuration file.
 supWSD.xsd | supWSD.xml schema definition. This file describes the elements in supWSD.xml and verify that each item adheres to the description of the element.
 
-
 ## Install
 
 ## Requirement
 1. This software requires java 8 (JRE 1.8) or higher version.
-2. Since supWSD uses JWNL for accessing WordNet, you must define the path of the Wordnet dictionary. In resources/wndictionary/prop.xml you can find this line ```xml<param name="dictionary_path" value="dict" />``` : the value "dict" specifies the path of the WordNet dictionary.
+2. Since supWSD uses JWNL for accessing WordNet, you must define the path of the Wordnet dictionary. In resources/wndictionary/prop.xml you can find this line ```<param name="dictionary_path" value="dict" />``` : the value "dict" specifies the path of the WordNet dictionary.
 
 ## Configuration
+supWSD configuration file allows to tune the entire disambiguation process:
+
+Tag | Attribute | Meaning
+------------ | ------------- | -------------
+working_directory |  | directory where the results will be saved (models, stats and scores).
+parser | mns | dataset parser; supWSD has 5 different parser types: lexical ,senseval, semeval7 ,semeval13 ,semeval15 and plain. You can also implement and integrate a new parser. **MNS** is the path to the file containing the lexelt informantion of testing instances.
 
 # License
 supWSD and its API are licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License.
