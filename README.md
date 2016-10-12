@@ -6,13 +6,21 @@ Name | Description
 ------------ | -------------
 config | Babelnet configuration folder, containing the properties files.
 lib | Babelnet libraries folder, containing all the necessary .jar files.
-models |  folder contains the models of the preprocessing components.
-resource | folder contains the lexical semantic resources (sense inventories) 
+models |  folder contains the models of the preprocessing components (only openNLP).
+resource | folder contains the lexical semantic resources (sense inventories).
+src/main/java/it/uniroma1/lcl/supWSD | source code package.
+LICENSE | license file.
+README | this file.
+pom.xml | Maven configuration file.
+supWSD.xml | supWSD configuration file.
+supWSD.xsd | supWSD.xml schema definition. This file describes the elements in supWSD.xml and verify that each item adheres to the description of the element.
 
 
 ## Install
 
 ## Requirement
+1. This software requires java 8 (JRE 1.8) or higher version.
+2. Since supWSD uses JWNL for accessing WordNet, you must define the path of the Wordnet dictionary. In resources/wndictionary/prop.xml you can find this line "<param name="dictionary_path" value="dict" />" ; the value "dict" specifies the path of the WordNet dictionary.
 
 ## Configuration
 
