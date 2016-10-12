@@ -11,7 +11,7 @@ public class App {
 
 		final String usage = "Usage: train|test config.xml corpus.xml keys.key";
 		String command, corpus, conf, keys;
-		
+
 		try {
 
 			if (checkArgs(args)) {
@@ -37,9 +37,16 @@ public class App {
 
 	private static boolean checkArgs(String[] args) {
 
-		int length = args.length;
-
-		return (args[0].equals("train") && length == 4) || (args[0].equals("test") && (length == 3 || length == 4));
-	}
+		boolean valid=false;
+		int length;
+		
+		if(args!=null){
+		
+			length = args.length;
+			valid= (length == 4 && args[0].equals("train")) || ((length == 3 || length == 4) && args[0].equals("test"));
 	
+		}
+		
+		return valid;
+	}
 }
