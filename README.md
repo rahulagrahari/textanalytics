@@ -27,12 +27,12 @@ supWSD configuration file allows to tune the entire disambiguation process:
 Tag | Attribute | Meaning
 ------------ | ------------- | -------------
 working_directory |  | the location where the results will be saved (models, stats and scores).
-parser | mns | dataset parser; supWSD has 5 different parser types: **lexical** ,**senseval**, **semeval7** ,**semeval13** ,**semeval15** and **plain**. You can also implement and integrate a new parser. **MNS** (*Model Name System*) is the path to the file containing the lexelt informantion of testing instances.
+parser | mns | dataset parser; supWSD has 5 different parser types: **lexical**, **senseval**, **semeval7**, **semeval13**, **semeval15** and **plain**. You can also implement and integrate a new parser. **MNS** (*Model Name System*) is the path to the file containing the lexelt informantion of testing instances.
 preprocessing |  | within this tag you can set the components to be used in the preprocessing pipeline. For each component you can specify the model to be applied using the **model** attribute. The **simple** component performs string splitting using the value of the model attribute.  You can also implement and integrate a new component using the factory method pattern. If you want to bypass a phase, set the value of the child at **none**. 
-splitter | model | which component to use for sentence splitting: **stanford** ,**open_nlp**, **simple**, **none**.
+splitter | model | which component to use for sentence splitting: **stanford**, **open_nlp**, **simple**, **none**.
 tokenizer | model |  which component to use for sentence tokenization: **stanford**, **open_nlp**, **penn_tree_bank**, **simple**, **none**.
-tagger | model | which component to use for part of speech tagging: **stanford** ,**open_nlp**, **simple**, **none**.
-lemmatizer | model | which component to use for lemmatization: **stanford** ,**jwnl**, **simple**, **none**.
+tagger | model | which component to use for part of speech tagging: **stanford**, **open_nlp**, **simple**, **none**.
+lemmatizer | model | which component to use for lemmatization: **stanford**, **jwnl**, **simple**, **none**.
 dependency_parser |  model| which component to use for dependency parsing: **stanford**, **none**.
 
 # License
