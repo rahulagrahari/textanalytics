@@ -27,7 +27,13 @@ supWSD configuration file allows to tune the entire disambiguation process:
 Tag | Attribute | Meaning
 ------------ | ------------- | -------------
 working_directory |  | the location where the results will be saved (models, stats and scores).
-parser | mns | dataset parser; supWSD has 5 different parser types: lexical ,senseval, semeval7 ,semeval13 ,semeval15 and plain. You can also implement and integrate a new parser. **MNS** is the path to the file containing the lexelt informantion of testing instances.
+parser | mns | dataset parser; supWSD has 5 different parser types: **lexical** ,**senseval**, **semeval7** ,**semeval13** ,**semeval15** and **plain**. You can also implement and integrate a new parser. **MNS** is the path to the file containing the lexelt informantion of testing instances.
+preprocessing |  | within this tag you can set the components to be used during preprocessing. For each component you can specify the model to be applied using the **model** attribute.
+splitter | model | which component to use for sentence splitting: **stanford** ,**open_nlp**, **simple**, **none**.
+tokenizer | model |  which component to use for sentence tokenization: **stanford**, **open_nlp**, **penn_tree_bank**, **simple**, **none**.
+tagger | model | which component to use for part of speech tagging: **stanford** ,**open_nlp**, **simple**, **none**.
+lemmatizer | model | which component to use for lemmatization: **stanford** ,**jwnl**, **simple**, **none**.
+dependency_parser |  model| which component to use for dependency parsing: **stanford**, **none**.
 
 # License
 supWSD and its API are licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License.
