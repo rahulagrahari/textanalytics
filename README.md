@@ -41,7 +41,7 @@ surrounding_words | cutoff stopwords window|
 syntactic_relations | cache strategy vectors vocab window |  
 classifier | | **liblinear** or **libsvm** : the classifier trains a model for each annotated word. The model will be used to classify test instances.
 writer |  | **all** , **single** (single file for each test instances), **plain** (a sentence for each line with senses and probabilities for disambiguated words)
-sense_inventory | dict | the sense inventory used for testing instances: **wordnet**, **babelnet** or **none**. For Wordnet you must set the attribute **dict** and specifies the path of the WordNet dictionary.
+sense_inventory | dict | the sense inventory used for testing instances: **wordnet**, **babelnet** or **none**. For Wordnet you must set the attribute **dict** and specify the path of the WordNet dictionary.
 
 # License
 supWSD and its API are licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License.
