@@ -24,7 +24,7 @@ supWSD.xsd | supWSD.xml schema definition. This file describes the elements in s
 1. This software requires java 8 (JRE 1.8) or higher version.
 2. Since supWSD uses JWNL for accessing WordNet, you must define the path of the Wordnet dictionary. In resources/wndictionary/prop.xml you can find this line ```<param name="dictionary_path" value="dict" />``` : the value "dict" specifies the path of the WordNet dictionary.
 
-## Quick start
+## Quick Start
 Assume the jar file is moved to directory "supWSD".
 
 To train one model, type in a shell open to this directory:  
@@ -60,7 +60,7 @@ local_collocations | cutoff sequences|
 surrounding_words | cutoff stopwords window|  
 syntactic_relations | cache strategy vectors vocab window |  
 classifier | | **liblinear** or **libsvm** : the classifier trains a model for each annotated word. The model will be used to classify test instances.
-writer |  | **all**: export results to a file; **single**: generate a file for each test instance; **plain**: create a plain file, a sentence for each line with senses and probabilities for disambiguated words.
+writer |  | **all**: export results to a file; **single**: generate a file for each test instance; **plain**: create a plain text file, a sentence for each line with senses and probabilities for disambiguated words.
 sense_inventory | dict | the sense inventory used for testing instances: **wordnet**, **babelnet** or **none**. For Wordnet you must set the attribute **dict** and specify the path of the WordNet dictionary.
 
 # License
