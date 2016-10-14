@@ -18,7 +18,7 @@ supWSD.xsd | supWSD.xml schema definition. This file describes the elements in s
 ## Install
 1. Download the jar file from the site (link will shortly follow)
 2. Move the jar to one directory (take *supWSD* for example)
-3. Copy the following files & directories into *supWSD* dir : supWSD.xml, supWSD.XSD, config, models, resources.
+3. Copy the following files & directories into *supWSD* dir: supWSD.xml, supWSD.xsd, config, models, resources.
 
 ## Requirement
 1. This software requires java 8 (JRE 1.8) or higher version.
@@ -60,7 +60,7 @@ local_collocations | cutoff sequences|
 surrounding_words | cutoff stopwords window|  
 syntactic_relations | cache strategy vectors vocab window |  
 classifier | | **liblinear** or **libsvm** : the classifier trains a model for each annotated word. The model will be used to classify test instances.
-writer |  | **all** : export results to a file; **single** : generate a file for each test instance; **plain** : create a plain file, a sentence for each line with senses and probabilities for disambiguated words.
+writer |  | **all**: export results to a file; **single**: generate a file for each test instance; **plain**: create a plain file, a sentence for each line with senses and probabilities for disambiguated words.
 sense_inventory | dict | the sense inventory used for testing instances: **wordnet**, **babelnet** or **none**. For Wordnet you must set the attribute **dict** and specify the path of the WordNet dictionary.
 
 # License
