@@ -16,10 +16,17 @@ supWSD.xml | supWSD configuration file.
 supWSD.xsd | supWSD.xml schema definition. This file describes the elements in supWSD.xml and verify that each item adheres to the description of the element.
 
 ## Install
+1. Download the jar file from the site (link will shortly follow)
+2. Move the jar to one directory (take "supWSD" for example)
+3. Copy the following files & directories into "supWSD" dir : *supWSD.xml*, *supWSD.XSD*, *config*, *models*, *resources*.
 
 ## Requirement
 1. This software requires java 8 (JRE 1.8) or higher version.
 2. Since supWSD uses JWNL for accessing WordNet, you must define the path of the Wordnet dictionary. In resources/wndictionary/prop.xml you can find this line ```<param name="dictionary_path" value="dict" />``` : the value "dict" specifies the path of the WordNet dictionary.
+
+## Quick start
+*Assume the jar file is moved to directory "supWSD".*
+To train one model, type in a shell open to this directory: 
 
 ## Configuration
 supWSD configuration file allows to tune the entire disambiguation process:
