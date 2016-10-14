@@ -17,8 +17,8 @@ supWSD.xsd | supWSD.xml schema definition. This file describes the elements in s
 
 ## Install
 1. Download the jar file from the site (link will shortly follow)
-2. Move the jar to one directory (take "supWSD" for example)
-3. Copy the following files & directories into "supWSD" dir : *supWSD.xml*, *supWSD.XSD*, *config*, *models*, *resources*.
+2. Move the jar to one directory (take *supWSD* for example)
+3. Copy the following files & directories into *supWSD* dir : supWSD.xml, supWSD.XSD, config, models, resources.
 
 ## Requirement
 1. This software requires java 8 (JRE 1.8) or higher version.
