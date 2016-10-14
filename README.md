@@ -26,7 +26,20 @@ supWSD.xsd | supWSD.xml schema definition. This file describes the elements in s
 
 ## Quick start
 *Assume the jar file is moved to directory "supWSD".*
-To train one model, type in a shell open to this directory: 
+
+To train one model, type in a shell open to this directory:  
+java -jar supWSD.jar train supWSD.xml train.xml train.keys  
+**train**  function name.  
+**supWSD.xml** configuration file.  
+**train.xml** corpus file.  
+**train.keys** keys file.
+
+To test one file, type in a shell open to this directory:  
+java -jar supWSD.jar test supWSD.xml test.xml test.keys  
+**test**  function name.  
+**supWSD.xml** configuration file.  
+**test.xml** test file.  
+**test.keys** keys file.
 
 ## Configuration
 supWSD configuration file allows to tune the entire disambiguation process:
@@ -47,7 +60,7 @@ local_collocations | cutoff sequences|
 surrounding_words | cutoff stopwords window|  
 syntactic_relations | cache strategy vectors vocab window |  
 classifier | | **liblinear** or **libsvm** : the classifier trains a model for each annotated word. The model will be used to classify test instances.
-writer |  | **all** , **single** (single file for each test instances), **plain** (a sentence for each line with senses and probabilities for disambiguated words)
+writer |  | **all** : export results to a file  ; **single** : generate a file for each test instance ;  **plain** : create a plain file, a sentence for each line with senses and probabilities for disambiguated words.
 sense_inventory | dict | the sense inventory used for testing instances: **wordnet**, **babelnet** or **none**. For Wordnet you must set the attribute **dict** and specify the path of the WordNet dictionary.
 
 # License
