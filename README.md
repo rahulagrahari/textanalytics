@@ -56,9 +56,10 @@ lemmatizer | model | which component to use for lemmatization: **stanford**, **j
 dependency_parser |  model| which component to use for dependency parsing: **stanford**, **none**.
 features |  |  which features have to be extracted. To disable an extractor, set the tag's value to false.
 pos_tags | cutoff |  **cutoff**: remove all the elements less than *threshold* in frequency.
-local_collocations | cutoff sequences| **sequences**: file containing an extraction sequence for each line. *Default: "-2 \n -1 \n 1 \n 2 \n -2 -1 \n -1 1 \n 1 2 \n -3 -1 \n -2 1 \n -1 2 \n 1 3"*
-surrounding_words | cutoff stopwords window|  
-syntactic_relations | cache strategy vectors vocab window |  
+local_collocations | cutoff sequences| **sequences**: file containing one extraction sequence per line (*default: "-2 \n -1 \n 1 \n 2 \n -2,-1 \n -1,1 \n 1,2 \n -3,-1 \n -2,1 \n -1,2 \n 1,3"*).
+surrounding_words | cutoff stopwords window|  **stopwords**: file containing a list of stop words, one word per line (*default: SurroundingStopWordsFilter.DEFAULT_FILTERS*); **window** : number of sentences (on a single side) in the neighborhood of the current sentence that will be used to extract words. Set -1 to extract all words.
+word_embeddings  | cache strategy vectors vocab window | **cache**: vector cache size as a percentage of the number of vectors [0-1]. **strategy**: *AVG (Average)* computes the centroid of the embeddings of all the surrounding words; *FRA (Fractional decay)* vectrors are weighted based on their distance from the target word; *EXP (Exponential decay)* the weight of vectors decay exponentially. **window**: number of words (on a single side) in the neighborhood of the tag word that will be used to extract embeddings.
+syntactic_relations | | extract different types of syntactic relations, depending on the POS of word.
 classifier | | **liblinear** or **libsvm** : the classifier trains a model for each annotated word. The model will be used to classify test instances.
 writer |  | **all**: export results to a file; **single**: generate a file for each test instance; **plain**: create a plain text file, a sentence for each line with senses and probabilities for disambiguated words.
 sense_inventory | dict | the sense inventory used for testing instances: **wordnet**, **babelnet** or **none**. For Wordnet you must set the attribute **dict** and specify the path of the WordNet dictionary.
