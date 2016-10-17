@@ -54,9 +54,9 @@ tokenizer | model |  which component to use for sentence tokenization: **stanfor
 tagger | model | which component to use for part of speech tagging: **stanford**, **open_nlp**, **simple**, **none**.
 lemmatizer | model | which component to use for lemmatization: **stanford**, **jwnl**, **simple**, **none**.
 dependency_parser |  model| which component to use for dependency parsing: **stanford**, **none**.
-features |  |  
-pos_tags | cutoff sequences|
-local_collocations | cutoff sequences|  
+features |  |  which features have to be extracted. To disable an extractor, set the tag's value to false.
+pos_tags | cutoff |  **cutoff**: remove all the elements less than *threshold* in frequency.
+local_collocations | cutoff sequences| **sequences**: file containing an extraction sequence for each line. *Default: "-2 \n -1 \n 1 \n 2 \n -2 -1 \n -1 1 \n 1 2 \n -3 -1 \n -2 1 \n -1 2 \n 1 3"*
 surrounding_words | cutoff stopwords window|  
 syntactic_relations | cache strategy vectors vocab window |  
 classifier | | **liblinear** or **libsvm** : the classifier trains a model for each annotated word. The model will be used to classify test instances.
