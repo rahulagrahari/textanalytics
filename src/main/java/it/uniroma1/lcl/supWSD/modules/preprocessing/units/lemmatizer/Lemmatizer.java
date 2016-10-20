@@ -1,8 +1,6 @@
 package it.uniroma1.lcl.supWSD.modules.preprocessing.units.lemmatizer;
 
-import java.util.List;
 import java.util.concurrent.Callable;
-
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 
 /**
@@ -16,7 +14,7 @@ public abstract class Lemmatizer  extends Unit implements Callable<Void>{
 		
 	}
 
-	public abstract String[] lemmatize(List<String> words,String[] POS) ;
+	public abstract String[] lemmatize(String[] words,String[] POS) ;
 	
 
 }

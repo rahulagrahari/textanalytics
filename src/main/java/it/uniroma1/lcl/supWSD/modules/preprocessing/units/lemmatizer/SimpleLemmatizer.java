@@ -1,6 +1,5 @@
 package it.uniroma1.lcl.supWSD.modules.preprocessing.units.lemmatizer;
 
-import java.util.List;
 
 /**
  * @author Simone Papandrea
@@ -17,25 +16,25 @@ class SimpleLemmatizer extends Lemmatizer {
 	}
 
 	@Override
-	public String[] lemmatize(List<String> words,String[] POS)  {
+	public String[] lemmatize(String[] words,String[] POS)  {
 
 		String[] lemmas,vals;
 		String item,model,lemma;
 		int length, index;
 
-		length = words.size();
+		length = words.length;
 		lemmas = new String[length];
 		model=this.getModel();
 		
 		for (int i = 0; i < length; i++) {
 
-			item = words.get(i);
+			item = words[i];
 			index = item.indexOf(model);
 
 			if (index > 0) {
 
 				vals=item.split(model);
-				words.set(i,vals[0]);
+				words[i]=vals[0];
 				lemma=vals[1];			
 			}
 			else

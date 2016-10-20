@@ -20,9 +20,12 @@ import it.uniroma1.lcl.supWSD.modules.classification.classifiers.Classifier;
 import it.uniroma1.lcl.supWSD.modules.classification.classifiers.ClassifierFactory;
 import it.uniroma1.lcl.supWSD.modules.parser.Parser;
 import it.uniroma1.lcl.supWSD.modules.parser.ParserFactory;
-import it.uniroma1.lcl.supWSD.modules.preprocessing.HybridPreprocessor;
+import it.uniroma1.lcl.supWSD.modules.parser.ParserType;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.HybridXMLPreprocessor;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.HybridPlainPreprocessor;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.Preprocessor;
-import it.uniroma1.lcl.supWSD.modules.preprocessing.StanfordPreprocessor;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.StanfordPlainPreprocessor;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.StanfordXMLPreprocessor;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.DependencyParserFactory;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.DependencyParserType;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.DependencyParser;
@@ -51,6 +54,7 @@ public class SupWSD {
 
 		Trainer trainer;
 		Config config;
+		ParserType parserType;
 		Parser parser;
 		Classifier<?, ?> classifier;
 		Preprocessor preprocessor;
@@ -60,12 +64,13 @@ public class SupWSD {
 		config = Config.load(conf);
 		Serializer.setDirectory(config.getWorkingDir());
 		Writer.setDirectory(config.getWorkingDir());
-		parser = ParserFactory.getInstance().getParser(config.getParserType());
+		parserType = config.getParserType();
+		parser = ParserFactory.getInstance().getParser(parserType);
 		classifier = ClassifierFactory.getInstance().getClassifier(config.getClassifierType());
 		preprocessor = getPreprocessor(config.getSplitterType(), config.getTokenizerType(), config.getTaggerType(),
 				config.getLemmatizerType(), config.getDParserType(), config.getSplitterModel(),
 				config.getTokenizerModel(), config.getTaggerModel(), config.getLemmatizerModel(),
-				config.getDParserModel());
+				config.getDParserModel(), parserType);
 
 		trainer = new Trainer(parser, preprocessor, config.getFeatureExtractors(), classifier, senses);
 		trainer.execute(corpus);
@@ -75,6 +80,7 @@ public class SupWSD {
 
 		Tester tester;
 		Config config;
+		ParserType parserType;
 		Parser parser;
 		MNS mns;
 		Preprocessor preprocessor;
@@ -89,12 +95,13 @@ public class SupWSD {
 		config = Config.load(conf);
 		Serializer.setDirectory(config.getWorkingDir());
 		Writer.setDirectory(config.getWorkingDir());
-		parser = ParserFactory.getInstance().getParser(config.getParserType());
+		parserType = config.getParserType();
+		parser = ParserFactory.getInstance().getParser(parserType);
 		mns = MNSFactory.getInstance().getMNS(config.getParserType(), config.getMNS());
 		preprocessor = getPreprocessor(config.getSplitterType(), config.getTokenizerType(), config.getTaggerType(),
 				config.getLemmatizerType(), config.getDParserType(), config.getSplitterModel(),
 				config.getTokenizerModel(), config.getTaggerModel(), config.getLemmatizerModel(),
-				config.getDParserModel());
+				config.getDParserModel(), parserType);
 		classifier = ClassifierFactory.getInstance().getClassifier(config.getClassifierType());
 		writer = WriterFactory.getInstance().getWriter(config.getWriterType());
 		senseInventory = SenseInventoryFactory.getInstance().getSenseInventory(config.getSenseInventory(),
@@ -108,7 +115,7 @@ public class SupWSD {
 	private static Preprocessor getPreprocessor(SplitterType splitterType, TokenizerType tokenizerType,
 			TaggerType taggerType, LemmatizerType lemmatizerType, DependencyParserType dependencyParserType,
 			String splitterModel, String tokenizerModel, String taggerModel, String lemmatizerModel,
-			String dParserModel) throws IOException {
+			String dParserModel, ParserType parserType) throws IOException {
 
 		Preprocessor preprocessor;
 		Splitter splitter;
@@ -130,7 +137,10 @@ public class SupWSD {
 				&& (!depparse
 						|| (pos && dependencyParserType.equals(DependencyParserType.STANFORD) && dParserModel == null)))
 
-			preprocessor = new StanfordPreprocessor(split, pos, lemma, depparse);
+			if (parserType.equals(ParserType.PLAIN))
+				preprocessor = new StanfordPlainPreprocessor(split, pos, lemma, depparse);
+			else
+				preprocessor = new StanfordXMLPreprocessor(split, pos, lemma, depparse);
 
 		else {
 
@@ -140,7 +150,12 @@ public class SupWSD {
 			lemmatizer = LemmatizerFactory.getInstance().getLemmatizer(lemmatizerType, lemmatizerModel);
 			dependencyParser = DependencyParserFactory.getInstance().getDependecyParser(dependencyParserType,
 					dParserModel);
-			preprocessor = new HybridPreprocessor(splitter, tokenizer, tagger, lemmatizer, dependencyParser);
+
+			if (parserType.equals(ParserType.PLAIN))
+				preprocessor = new HybridPlainPreprocessor(splitter, tokenizer, tagger, lemmatizer, dependencyParser);
+			else
+				preprocessor = new HybridXMLPreprocessor(splitter, tokenizer, tagger, lemmatizer, dependencyParser);
+
 		}
 
 		return preprocessor;

@@ -46,6 +46,7 @@ public class SemEval15Handler extends SemEval7Handler {
 
 		case SENTENCE:
 
+			this.addAnnotation();
 			this.notifyAnnotations();
 			break;
 			

@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -31,7 +35,7 @@ public class Serializer {
 	private static String DIRECTORY = ".";
 	protected static final String ENCODING = "ISO8859-1";
 	private static final String DEFAULT_SEPARATOR = "\t";
-	
+
 	public static Object readModel(String lexel) throws IOException, ClassNotFoundException {
 
 		Object model = null;
@@ -61,7 +65,7 @@ public class Serializer {
 		String line, senses[], tokens[];
 		String key, filename;
 
-		filename =DIRECTORY+ File.separator+ STATS_DIR + File.separator + lexel + ".stat.gz";
+		filename = DIRECTORY + File.separator + STATS_DIR + File.separator + lexel + ".stat.gz";
 
 		try {
 
@@ -70,24 +74,24 @@ public class Serializer {
 
 			line = reader.readLine();
 			senses = line.split(DEFAULT_SEPARATOR);
-			ambiguityTest = new AmbiguityTest(lexel ,senses);
+			ambiguityTest = new AmbiguityTest(lexel, senses);
 
 			while ((line = reader.readLine()) != null) {
 
 				tokens = line.split(DEFAULT_SEPARATOR);
 				key = tokens[0];
 
-				try{
-				for (int i = 1; i < tokens.length; i += 2)
-					ambiguityTest.setStatistic(key, tokens[i], Integer.valueOf(tokens[i + 1]));
-			
-			}catch(NumberFormatException e){
-				
-				e.printStackTrace();
-				
+				try {
+					for (int i = 1; i < tokens.length; i += 2)
+						ambiguityTest.setStatistic(key, tokens[i], Integer.valueOf(tokens[i + 1]));
+
+				} catch (NumberFormatException e) {
+
+					e.printStackTrace();
+
+				}
 			}
-			}
-	
+
 		} finally {
 
 			if (reader != null)
@@ -108,8 +112,8 @@ public class Serializer {
 		Set<String> keys;
 		final String filename;
 
-		filename = DIRECTORY+ File.separator+STATS_DIR + File.separator + ambiguity.getLexel() + ".stat.gz";
-			
+		filename = DIRECTORY + File.separator + STATS_DIR + File.separator + ambiguity.getLexel() + ".stat.gz";
+
 		try {
 
 			writer = new BufferedWriter(
@@ -122,7 +126,7 @@ public class Serializer {
 				keys = ambiguity.getFeatureKeys(type);
 
 				if (keys != null) {
-					
+
 					for (String featureKey : keys) {
 
 						writer.write(featureKey);
@@ -139,7 +143,7 @@ public class Serializer {
 					}
 				}
 			}
-			
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
@@ -154,7 +158,6 @@ public class Serializer {
 
 	}
 
-	
 	public static void writeModel(String lexel, Object model) throws IOException {
 
 		final String filename;
@@ -184,10 +187,23 @@ public class Serializer {
 	public static void setDirectory(String dir) {
 
 		DIRECTORY = dir;
+
 		new File(dir + File.separator + MODELS_DIR).mkdirs();
 		new File(dir + File.separator + STATS_DIR).mkdirs();
 	}
 
-	
+	public static boolean modelExists(String lexel) {
+
+		boolean exist = false;
+		final Path path;
+
+		try {
+			path = Paths.get(DIRECTORY, MODELS_DIR, lexel+ ".model.gz");
+			exist = Files.exists(path);
+		} catch (InvalidPathException e) {
+		}
+		
+		return exist;
+	}
 
 }

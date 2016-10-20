@@ -8,8 +8,7 @@ import it.uniroma1.lcl.supWSD.modules.extraction.features.Feature;
  */
 public class AmbiguityTest extends Ambiguity{
 
-
-	private transient String[] mClasses;
+	private String[] mClasses;
 
 	public AmbiguityTest(String lexel,String[] senses) {
 		

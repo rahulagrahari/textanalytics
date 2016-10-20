@@ -14,7 +14,7 @@ import it.uniroma1.lcl.supWSD.modules.extraction.features.Feature;
  */
 public class AmbiguityTrain extends Ambiguity {
 
-	private transient Map<Class<? extends Feature>, HashSet<String>> mTypes;
+	private Map<Class<? extends Feature>, HashSet<String>> mTypes;
 
 	public AmbiguityTrain(String lexel) {
 

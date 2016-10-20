@@ -15,6 +15,7 @@ import it.uniroma1.lcl.supWSD.modules.parser.xml.XMLHandler;
 public class LexicalHandler extends XMLHandler {
 	
 	private String mSentence, mID,mName;
+	private int mIndex=0;
 	private List<Annotation>mAnnotations;
 	private String mHead="";
 	
@@ -68,9 +69,10 @@ public class LexicalHandler extends XMLHandler {
 			if(mHead.isEmpty())
 				throw new  SAXException("Missed tag <HEAD> in sentence "+mID);
 			
-			annotation=new Annotation(mSentence.trim());
+			annotation=new Annotation(mIndex,mSentence.trim());
 			annotation.addLexel(new Lexel(mID,mName));
-			this.mAnnotations.add(annotation);
+			mAnnotations.add(annotation);
+			mIndex++;
 			break;
 			
 		case HEAD:

@@ -17,6 +17,7 @@ import it.uniroma1.lcl.supWSD.modules.parser.xml.XMLHandler;
  */
 public class SemEval7Handler extends XMLHandler {
 
+	private int mIndex=0;
 	protected String mID;
 	private String mSentence = "",mLemma,mPOS;
 	protected final Map<String,Lexel>mLexels;
@@ -134,7 +135,7 @@ public class SemEval7Handler extends XMLHandler {
 
 		Annotation annotation;
 
-		annotation=new Annotation(mSentence.trim());
+		annotation=new Annotation(mIndex,mSentence.trim());
 		
 		for(Lexel lexel:mLexels.values())
 			annotation.addLexel(lexel);
@@ -142,6 +143,7 @@ public class SemEval7Handler extends XMLHandler {
 		mAnnotations.add(annotation);
 		mLexels.clear();
 		mSentence = "";
+		mIndex++;
 	}
 
 }

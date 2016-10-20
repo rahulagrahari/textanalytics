@@ -116,7 +116,7 @@ public abstract class Ambiguity {
 	public void dispose() {
 
 		this.mStatistic.clear();
-		// this.mInstances.clear();
+		this.mInstances.clear();
 		this.mSenses.clear();
 	}
 

@@ -79,7 +79,7 @@ public class Evaluator {
 		SortedSet<Result> results = new TreeSet<Result>();
 
 		for (Instance instance : ambiguity.getInstances())
-			results.add(new Result(instance.getID(), instance.getSenses(), cls));
+			results.add(new Result(instance.getWord(), instance.getID(), instance.getSenses(), cls));
 
 		return results;
 	}

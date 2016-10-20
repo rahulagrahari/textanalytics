@@ -71,16 +71,16 @@ class JWNLLemmatizer extends Lemmatizer {
 	}
 
 	@Override
-	public synchronized String[] lemmatize(List<String> words, String[] POSTags) {
+	public synchronized String[] lemmatize( String[] words, String[] POSTags) {
 
 		String lemmas[];
 		int length;
 
-		length = words.size();
+		length = words.length;
 		lemmas = new String[length];
 
 		for (int i = 0; i < length; i++)
-			lemmas[i] = getLemma(words.get(i), POSTags[i]);
+			lemmas[i] = getLemma(words[i], POSTags[i]);
 
 		return lemmas;
 	}

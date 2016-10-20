@@ -1,7 +1,5 @@
 package it.uniroma1.lcl.supWSD.modules.preprocessing.units.lemmatizer;
 
-import java.util.List;
-
 import edu.stanford.nlp.process.Morphology;
 
 /**
@@ -21,16 +19,16 @@ class StanfordLemmatizer extends Lemmatizer {
 	}
 
 	@Override
-	public String[] lemmatize(List<String> words, String[] POSTags) {
+	public String[] lemmatize(String[] words, String[] POSTags) {
 
 		String lemmas[];
 		int length;
 
-		length = words.size();
+		length = words.length;
 		lemmas = new String[length];
 
 		for (int i = 0; i < length; i++)
-			lemmas[i] = getLemma(words.get(i), POSTags[i]);
+			lemmas[i] = getLemma(words[i], POSTags[i]);
 
 		return lemmas;
 	}

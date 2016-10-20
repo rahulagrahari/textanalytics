@@ -11,19 +11,21 @@ public class Result implements Comparable<Result> {
 
 	public static final String SENSE_UNK = "U";
 	private final String mID;
+	private final String mWord;
 	private final SortedSet<String> mSenses;
 	private final SortedSet<Answer> mAnswers;
 	private final static String SEPARATOR = "\t";
 
 	
-	public Result(String id, SortedSet<String> senses, String cls) {
+	public Result(String word,String id, SortedSet<String> senses, String cls) {
 
-		this(id, senses, new String[] { cls }, new double[] { 1 });
+		this(word,id, senses, new String[] { cls }, new double[] { 1 });
 
 	}
 
-	public Result(String id, SortedSet<String> senses,String[] classes, double[] probs) {
+	public Result(String word,String id, SortedSet<String> senses,String[] classes, double[] probs) {
 
+		this.mWord = word;
 		this.mID = id;
 		this.mSenses = senses;
 		this.mAnswers = new TreeSet<Answer>();
@@ -38,6 +40,12 @@ public class Result implements Comparable<Result> {
 		return this.mID;
 	}
 
+	public String getWord() {
+
+		return this.mWord;
+	}
+	
+	
 	public boolean hasLegalAnswer(){
 		
 		return !this.mAnswers.first().getCls().equals(SENSE_UNK);

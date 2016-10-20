@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Vector;
+
 
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.dependencyTree.DependencyTree;
 
@@ -17,14 +17,16 @@ import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.depen
 public class Annotation implements Iterable<Lexel> {
 
 	public final static String ANNOTATION_TAG = "HEAD";
+	private final Integer mID;
 	private final String mText;
 	private final List<Token[]> mTokens;
 	private final SortedSet<Lexel> mLexels;
 	private final List<DependencyTree> mDependencyTrees;
 	private final List<String> mSentences;
 
-	public Annotation(String sentence) {
+	public Annotation(int id,String sentence) {
 
+		this.mID=id;
 		this.mText = sentence;
 		this.mTokens = new ArrayList<Token[]>();
 		this.mLexels = new TreeSet<Lexel>();
@@ -113,27 +115,27 @@ public class Annotation implements Iterable<Lexel> {
 	}
 	
 
-	public void annote(Vector<List<String>> words, String[][] POS, String[][] lemmas,
+	public void annote( String[][] words, String[][] POS, String[][] lemmas,
 			DependencyTree[] dependecies) {
 
 		int size;
 
-		size = words.size();
+		size = words.length;
 		
 		for (int i = 0; i < size; i++)			
-			annote(words.get(i),POS!=null?POS[i]:null,lemmas!=null?lemmas[i]:null,dependecies!=null?dependecies[i]:null);		
+			annote(words[i],POS!=null?POS[i]:null,lemmas!=null?lemmas[i]:null,dependecies!=null?dependecies[i]:null);		
 	}
 
-	public void annote(List<String> words, String[] POS, String[] lemmas,DependencyTree dependecyTree) {
+	public void annote(String[] words, String[] POS, String[] lemmas,DependencyTree dependecyTree) {
 
 		Token[] tokens;
 		int length;
 
-		length=words.size();
+		length=words.length;
 		tokens = new Token[length];
 			
 		for(int j=0;j<length;j++)				
-			tokens[j]=new Token(words.get(j),POS!=null?POS[j]:null,lemmas!=null?lemmas[j]:null);
+			tokens[j]=new Token(words[j],POS!=null?POS[j]:null,lemmas!=null?lemmas[j]:null);
 			
 		this.mTokens.add(tokens);
 
@@ -163,5 +165,10 @@ public class Annotation implements Iterable<Lexel> {
 	public Iterator<Lexel> iterator() {
 
 		return mLexels.iterator();
+	}
+
+	public Integer getID() {
+	
+		return mID;
 	}
 }

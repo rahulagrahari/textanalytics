@@ -122,7 +122,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 					annotation = thread.mAnnotation;
 
 					for (Lexel lexel : annotation) {
-
+						
 						token = annotation.getToken(lexel);
 						names = getModelName(lexel, token);
 						id = lexel.getID();
@@ -132,7 +132,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 												// for
 												// instance id "+id);
 							for (String name : names) {
-
+								
 								if (ambiguities.containsKey(name))
 									ambiguity = ambiguities.get(name);
 
@@ -142,9 +142,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 								}
 
 								ambiguity.add(id, token.getWord(), thread.mFeatures.get(lexel), senses);
-							}
-						
-
+							}					
 					}
 
 					annotation.dispose();

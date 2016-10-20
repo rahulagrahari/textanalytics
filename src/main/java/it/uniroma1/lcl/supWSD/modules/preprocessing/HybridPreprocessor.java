@@ -1,18 +1,15 @@
 package it.uniroma1.lcl.supWSD.modules.preprocessing;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.tokenizer.Tokenizer;
 import it.uniroma1.lcl.supWSD.data.Annotation;
-import it.uniroma1.lcl.supWSD.data.Lexel;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.DependencyParser;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.dependencyTree.DependencyTree;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.lemmatizer.Lemmatizer;
@@ -23,15 +20,15 @@ import it.uniroma1.lcl.supWSD.modules.preprocessing.units.tagger.Tagger;
  * @author Simone Papandrea
  *
  */
-public class HybridPreprocessor implements Preprocessor {
+abstract class HybridPreprocessor implements Preprocessor {
 
 	private final Splitter mSplitter;
 	private final Tokenizer mTokenizer;
 	private final Tagger mTagger;
 	private final Lemmatizer mLemmatizer;
 	private final DependencyParser mDependencyParser;
-
-	public HybridPreprocessor(Splitter splitter, Tokenizer tokenizer, Tagger tagger, Lemmatizer lemmatizer,
+	
+	HybridPreprocessor(Splitter splitter, Tokenizer tokenizer, Tagger tagger, Lemmatizer lemmatizer,
 			DependencyParser dependencyParser) {
 
 		this.mSplitter = splitter;
@@ -42,72 +39,9 @@ public class HybridPreprocessor implements Preprocessor {
 	}
 
 	@Override
-	public final void execute(Annotation annotation) {
+	public abstract void execute(Annotation annotation);
 
-		String[] sentences;
-		String[][] words, lemmas = null, POS = null;
-		Vector<List<String>> tokens = null;
-		DependencyTree[] dependencies = null;
-		List<String> sentence;
-		Iterator<Lexel> lexels;
-		String word, head = "";
-		final int index;
-		final String tag = Annotation.ANNOTATION_TAG;
-		boolean start = false;
-
-		index = tag.length();
-		sentences = split(annotation.getText());
-		words = tokenize(sentences);
-
-		if (words != null) {
-
-			tokens = new Vector<List<String>>();
-			lexels = annotation.iterator();
-
-			for (int i = 0; i < words.length; i++) {
-
-				sentence = new ArrayList<String>();
-
-				for (int j = 0; j < words[i].length; j++) {
-
-					word = words[i][j];
-
-					if (word.startsWith(tag) && !start) {
-
-						head = "";
-						start = true;
-						lexels.next().set(i, sentence.size());
-						word = word.substring(index);
-					}
-
-					if (word.endsWith(tag)) {
-						start = false;
-						word = head + word.substring(0, word.length() - index);
-					}
-
-					if (start)
-						head += word;
-					else
-						sentence.add(word);
-				}
-
-				tokens.add(sentence);
-			}
-
-			POS = POSTag(tokens);
-
-			if (POS != null)
-				lemmas = lemmatize(tokens, POS);
-
-			if (lemmas != null)
-				dependencies = parseDependencies(lemmas, POS);
-
-			annotation.annote(tokens, POS, lemmas, dependencies);
-
-		} else
-			annotation.annote(sentences);
-	}
-
+	
 	protected final String[][] tokenize(String[] sentences) {
 
 		String[][] tokens = null;
@@ -125,33 +59,33 @@ public class HybridPreprocessor implements Preprocessor {
 		return tokens;
 	}
 
-	protected final String[][] POSTag(Vector<List<String>> tokens) {
+	protected final String[][] POSTag(String[][] tokens) {
 
 		String[][] tags = null;
 		int length;
 
 		if (mTagger != null) {
 
-			length = tokens.size();
+			length = tokens.length;
 			tags = new String[length][];
 
 			for (int i = 0; i < length; i++)
-				tags[i] = POSTag(tokens.get(i));
+				tags[i] = POSTag(Arrays.asList(tokens[i]));
 		}
 
 		return tags;
 	}
-
-	protected final String[][] lemmatize(Vector<List<String>> words, String[][] POSTags) {
+	
+	protected final String[][] lemmatize(String[][] words, String[][] POSTags) {
 
 		String lemmas[][];
 		int length;
 
-		length = words.size();
+		length = words.length;
 		lemmas = new String[length][];
 
 		for (int i = 0; i < length; i++)
-			lemmas[i] = lemmatize(words.get(i), POSTags[i]);
+			lemmas[i] = lemmatize(words[i], POSTags[i]);
 
 		return lemmas;
 	}
@@ -231,7 +165,7 @@ public class HybridPreprocessor implements Preprocessor {
 		return mTagger.tag(tokens);
 	}
 
-	protected String[] lemmatize(List<String> words, String[] POS) {
+	protected String[] lemmatize(String[] words, String[] POS) {
 
 		return mLemmatizer.lemmatize(words, POS);
 	}
@@ -259,4 +193,6 @@ public class HybridPreprocessor implements Preprocessor {
 		if (mDependencyParser != null)
 			mDependencyParser.unload();
 	}
+	
+
 }
