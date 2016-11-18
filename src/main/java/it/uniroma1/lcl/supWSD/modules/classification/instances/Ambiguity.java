@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+
+import it.uniroma1.lcl.supWSD.data.Token;
 import it.uniroma1.lcl.supWSD.modules.extraction.features.Feature;
 
 /**
@@ -37,7 +39,7 @@ public abstract class Ambiguity {
 		return mLexel;
 	}
 
-	public final void add(String id, String word, Collection<Feature> features, SortedSet<String> senses) {
+	public final void add(String id, Token token, Collection<Feature> features, SortedSet<String> senses) {
 
 		int index;
 		Iterator<Feature> featureIter;
@@ -67,8 +69,7 @@ public abstract class Ambiguity {
 			mExamplesCount += senses.size();
 		}
 
-		mInstances.add(new Instance(id, word, features, senses));
-
+		mInstances.add(new Instance(id, features, senses,token));
 	}
 
 	protected abstract int addFeature(Feature feature);

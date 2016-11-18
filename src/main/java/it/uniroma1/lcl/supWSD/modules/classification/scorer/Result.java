@@ -3,6 +3,8 @@ package it.uniroma1.lcl.supWSD.modules.classification.scorer;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import it.uniroma1.lcl.supWSD.data.Token;
+
 /**
  * @author Simone Papandrea
  *
@@ -11,21 +13,21 @@ public class Result implements Comparable<Result> {
 
 	public static final String SENSE_UNK = "U";
 	private final String mID;
-	private final String mWord;
+	private final Token mToken;
 	private final SortedSet<String> mSenses;
 	private final SortedSet<Answer> mAnswers;
 	private final static String SEPARATOR = "\t";
 
 	
-	public Result(String word,String id, SortedSet<String> senses, String cls) {
+	public Result(String id, SortedSet<String> senses, String cls,Token token) {
 
-		this(word,id, senses, new String[] { cls }, new double[] { 1 });
+		this(id, senses, new String[] { cls }, new double[] { 1 },token);
 
 	}
 
-	public Result(String word,String id, SortedSet<String> senses,String[] classes, double[] probs) {
+	public Result(String id, SortedSet<String> senses,String[] classes, double[] probs,Token token) {
 
-		this.mWord = word;
+		this.mToken=token;
 		this.mID = id;
 		this.mSenses = senses;
 		this.mAnswers = new TreeSet<Answer>();
@@ -40,9 +42,9 @@ public class Result implements Comparable<Result> {
 		return this.mID;
 	}
 
-	public String getWord() {
+	public Token getToken() {
 
-		return this.mWord;
+		return this.mToken;
 	}
 	
 	

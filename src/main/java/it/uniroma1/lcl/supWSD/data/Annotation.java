@@ -16,7 +16,7 @@ import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.depen
  */
 public class Annotation implements Iterable<Lexel> {
 
-	public final static String ANNOTATION_TAG = "HEAD";
+	public final static String ANNOTATION_TAG = "S0a2rHrOpF";
 	private final Integer mID;
 	private final String mText;
 	private final List<Token[]> mTokens;
@@ -171,4 +171,11 @@ public class Annotation implements Iterable<Lexel> {
 	
 		return mID;
 	}
+	
+	@Override
+	public String toString(){
+		
+		return this.mText;
+	}
+	
 }

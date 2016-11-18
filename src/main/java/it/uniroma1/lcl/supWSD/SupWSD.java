@@ -60,7 +60,7 @@ public class SupWSD {
 		Preprocessor preprocessor;
 		Map<String, SortedSet<String>> senses = null;
 
-		senses = readSenses(keys);
+		//senses = readSenses(keys);
 		config = Config.load(conf);
 		Serializer.setDirectory(config.getWorkingDir());
 		Writer.setDirectory(config.getWorkingDir());

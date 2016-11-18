@@ -3,6 +3,8 @@ package it.uniroma1.lcl.supWSD.modules.classification.instances;
 import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import it.uniroma1.lcl.supWSD.data.Token;
 import it.uniroma1.lcl.supWSD.modules.extraction.features.Feature;
 
 /**
@@ -12,14 +14,14 @@ import it.uniroma1.lcl.supWSD.modules.extraction.features.Feature;
 public class Instance implements Comparable<Instance> {
 
 	private final String mID;
-	private final String mWord;
+	private final Token mToken;
 	private final SortedSet<Feature> mFeatures;
 	private final SortedSet<String> mSenses;
 	
-	public Instance(String id,String word,Collection<Feature> features,SortedSet<String>  senses) {
+	public Instance(String id,Collection<Feature> features,SortedSet<String>  senses, Token token) {
 
 		this.mID=id;
-		this.mWord=word;
+		this.mToken=token;
 		this.mFeatures=new TreeSet<Feature>(features);
 		this.mSenses=senses;
 	}
@@ -29,9 +31,9 @@ public class Instance implements Comparable<Instance> {
 		return this.mID;
 	}
 
-	public String getWord() {
+	public Token getToken() {
 
-		return this.mWord;
+		return this.mToken;
 	}
 	
 	public SortedSet<Feature> getFeatures() {

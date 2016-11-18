@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import it.uniroma1.lcl.supWSD.data.POSMap;
+import it.uniroma1.lcl.supWSD.data.POSMap.TAG;
+import it.uniroma1.lcl.supWSD.data.Token;
 import it.uniroma1.lcl.supWSD.modules.classification.instances.AmbiguityTest;
 import it.uniroma1.lcl.supWSD.modules.classification.scorer.Result;
 
@@ -18,7 +22,6 @@ import it.uniroma1.lcl.supWSD.modules.classification.scorer.Result;
  */
 class PlainWriter extends Writer {
 
-	private static final String TAG = "x";
 	private static final String FILE_NAME = "plain";
 
 	@Override
@@ -29,14 +32,17 @@ class PlainWriter extends Writer {
 		Map<String, TreeSet<Result>> map;
 		TreeSet<Result> results;
 		String line, id;
-
+		TAG pos;
+		Token token;
+		 POSMap posMap;
+		 
 		filename = getDir() + File.separator + FILE_NAME + ".result";
 
 		try {
 
 			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), ENCODING));
 			map = new TreeMap<String, TreeSet<Result>>();
-
+				 
 			for (Entry<AmbiguityTest, TreeSet<Result>> e : tests.entrySet()) {
 
 				for (Result result : e.getValue()) {
@@ -54,6 +60,8 @@ class PlainWriter extends Writer {
 					results.add(result);
 				}
 			}
+			
+			posMap = POSMap.getInstance();
 
 			for (TreeSet<Result> r : map.values()) {
 
@@ -61,12 +69,15 @@ class PlainWriter extends Writer {
 
 				for (Result result:r) {
 
-					line += "<" + TAG;
+					token=result.getToken();
+					pos=posMap.getPOS(token.getPOS());
+					line += "<" + pos;
 
 					if (result.hasLegalAnswer())
 						line += " " + String.join(" ", result.getAnswers());
 
-					line += ">" + result.getWord() + "</" + TAG + "> ";
+					
+					line += ">" + token.getWord() + "</" + pos+ "> ";
 				}
 
 				writer.write(line.trim());

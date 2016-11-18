@@ -38,10 +38,10 @@ public abstract class Classifier<T,V> {
 				
 				featureNode = getFeatureNodes(features);
 				probs=predict((T) model, featureNode);
-				result=new Result(instance.getWord(),instance.getID(), instance.getSenses(), ambiguity.getClasses(),probs);
+				result=new Result(instance.getID(), instance.getSenses(), ambiguity.getClasses(),probs,instance.getToken());
 			}
 			else
-				result=new Result(instance.getWord(),instance.getID(), instance.getSenses(),cls);
+				result=new Result(instance.getID(), instance.getSenses(),cls,instance.getToken());
 			
 			results.add(result);
 		}

@@ -95,7 +95,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 		executor = Executors.newFixedThreadPool(EXECUTOR_SIZE);
 
 		try {
-		
+
 			service = new ExecutorCompletionService<SentenceThread>(executor);
 			ambiguities = new HashMap<String, T>();
 			size = annotations.size();
@@ -122,27 +122,27 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 					annotation = thread.mAnnotation;
 
 					for (Lexel lexel : annotation) {
-						
+
 						token = annotation.getToken(lexel);
 						names = getModelName(lexel, token);
 						id = lexel.getID();
 						senses = getSenses(id);
 
-						//if (senses != null) {// throw new Exception("No sense
-												// for
-												// instance id "+id);
-							for (String name : names) {
-								
-								if (ambiguities.containsKey(name))
-									ambiguity = ambiguities.get(name);
+						// if (senses != null) {// throw new Exception("No sense
+						// for
+						// instance id "+id);
+						for (String name : names) {
 
-								else {
-									ambiguity = getAmbiguity(name);
-									ambiguities.put(name, ambiguity);
-								}
+							if (ambiguities.containsKey(name))
+								ambiguity = ambiguities.get(name);
 
-								ambiguity.add(id, token.getWord(), thread.mFeatures.get(lexel), senses);
-							}					
+							else {
+								ambiguity = getAmbiguity(name);
+								ambiguities.put(name, ambiguity);
+							}
+
+							ambiguity.add(id, token, thread.mFeatures.get(lexel), senses);
+						}
 					}
 
 					annotation.dispose();
@@ -153,7 +153,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 			classify(ambiguities.values());
 
 		} finally {
-			
+
 			executor.shutdownNow();
 			executor.awaitTermination(5, TimeUnit.SECONDS);
 		}
@@ -166,12 +166,12 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 
 	protected final SortedSet<String> getSenses(String id) {
 
-		return mSenses==null?null:mSenses.get(id);
+		return mSenses == null ? null : mSenses.get(id);
 	}
 
 	protected final int getSensesCount() {
 
-		return mSenses==null?0:mSenses.size();
+		return mSenses == null ? 0 : mSenses.size();
 	}
 
 	private class SentenceThread implements Callable<SentenceThread> {
@@ -190,13 +190,18 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 
 			Vector<Feature> features;
 
-			mPreprocessor.execute(mAnnotation);
+			try {
+				mPreprocessor.execute(mAnnotation);
 
-			for (Lexel lexel : mAnnotation) {
+				for (Lexel lexel : mAnnotation) {
 
-				features = mExtractor.extract(lexel, mAnnotation);
+					features = mExtractor.extract(lexel, mAnnotation);
 
-				this.mFeatures.put(lexel, features);
+					this.mFeatures.put(lexel, features);
+				}
+			} catch (Exception e) {
+
+				throw new Exception(mAnnotation.toString(), e);
 			}
 
 			return this;
