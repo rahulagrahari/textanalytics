@@ -110,6 +110,10 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		}
 
 		
+		for(Lexel lexel:annotation.getLexels())
+			if(lexel.getSentenceIndex()==-1)
+				System.out.println(annotation);
+				
 		annotation.annote(tokens, mPOS ? tags : null, mLemma ? lemmas : null, mDepParse ? dtree : null);
 		mIndex.remove(id);
 	}
