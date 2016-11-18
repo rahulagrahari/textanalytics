@@ -27,13 +27,13 @@ import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.depen
  */
 public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 
-	private final ConcurrentHashMap<Integer,HashSet<Integer>> mIndex;
+	private final ConcurrentHashMap<Integer, HashSet<Integer>> mIndex;
 
 	public StanfordXMLPreprocessor(boolean split, boolean pos, boolean lemma, boolean depparse) {
 
 		super(split, pos, lemma, depparse, true);
 
-		mIndex = new ConcurrentHashMap <Integer,HashSet<Integer>>();
+		mIndex = new ConcurrentHashMap<Integer, HashSet<Integer>>();
 	}
 
 	@Override
@@ -42,12 +42,12 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		Pattern pattern;
 		Matcher matcher;
 		int count = 0;
-		HashSet<Integer>indexes;
-		
+		HashSet<Integer> indexes;
+
 		pattern = Pattern.compile(Annotation.ANNOTATION_TAG);
 		matcher = pattern.matcher(annotation.getText());
-		indexes=new HashSet<Integer>();
-		
+		indexes = new HashSet<Integer>();
+
 		while (matcher.find()) {
 
 			indexes.add(matcher.start() - count);
@@ -56,7 +56,7 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		}
 
 		mIndex.put(annotation.getID(), indexes);
-		
+
 		return matcher.replaceAll("");
 	}
 
@@ -70,18 +70,18 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		String tokens[][], tags[][], lemmas[][], words[];
 		DependencyTree[] dtree;
 		Iterator<Lexel> lexels;
-		HashSet<Integer>indexes;
-		int id,size, length;
-		
+		HashSet<Integer> indexes;
+		int id, size, length;
+
 		size = sentences.size();
 		tokens = new String[size][];
 		tags = new String[size][];
 		lemmas = new String[size][];
 		dtree = new DependencyTree[size];
 		lexels = annotation.iterator();
-		id=annotation.getID();
-		indexes=mIndex.get(id);
-		
+		id = annotation.getID();
+		indexes = mIndex.get(id);
+
 		for (int i = 0; i < size; i++) {
 
 			sentence = sentences.get(i);
@@ -98,14 +98,8 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 				tags[i][j] = label.get(PartOfSpeechAnnotation.class);
 				lemmas[i][j] = label.get(LemmaAnnotation.class);
 
-				if (indexes.contains(label.beginPosition())){
-					
-					if(!lexels.hasNext())
-						System.out.println("");
-					
+				if (indexes.contains(label.beginPosition()))
 					lexels.next().set(i, j);
-				}
-					
 			}
 
 			tokens[i] = words;
