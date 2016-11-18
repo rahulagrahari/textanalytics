@@ -44,7 +44,7 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		int count = 0;
 		HashSet<Integer> indexes;
 
-		pattern = Pattern.compile(Annotation.ANNOTATION_TAG);
+		pattern = Pattern.compile("\\b"+Pattern.quote(Annotation.ANNOTATION_TAG));
 		matcher = pattern.matcher(annotation.getText());
 		indexes = new HashSet<Integer>();
 
@@ -109,6 +109,7 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 				dtree[i] = getDependencyTree(graph);
 		}
 
+		
 		annotation.annote(tokens, mPOS ? tags : null, mLemma ? lemmas : null, mDepParse ? dtree : null);
 		mIndex.remove(id);
 	}
