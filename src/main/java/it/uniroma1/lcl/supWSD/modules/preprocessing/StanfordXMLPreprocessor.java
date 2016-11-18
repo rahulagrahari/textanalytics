@@ -3,9 +3,9 @@ package it.uniroma1.lcl.supWSD.modules.preprocessing;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
@@ -27,13 +27,13 @@ import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.depen
  */
 public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 
-	private final HashSet<Integer> mIndexes;
+	private final ConcurrentHashMap<Integer,HashSet<Integer>> mIndex;
 
 	public StanfordXMLPreprocessor(boolean split, boolean pos, boolean lemma, boolean depparse) {
 
 		super(split, pos, lemma, depparse, true);
 
-		mIndexes = new HashSet<Integer>();
+		mIndex = new ConcurrentHashMap <Integer,HashSet<Integer>>();
 	}
 
 	@Override
@@ -42,17 +42,21 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		Pattern pattern;
 		Matcher matcher;
 		int count = 0;
-
+		HashSet<Integer>indexes;
+		
 		pattern = Pattern.compile(Annotation.ANNOTATION_TAG);
 		matcher = pattern.matcher(annotation.getText());
-
+		indexes=new HashSet<Integer>();
+		
 		while (matcher.find()) {
 
-			mIndexes.add(matcher.start() - count);
+			indexes.add(matcher.start() - count);
 			count += Annotation.ANNOTATION_TAG.length() * 2;
 			matcher.find();
 		}
 
+		mIndex.put(annotation.getID(), indexes);
+		
 		return matcher.replaceAll("");
 	}
 
@@ -65,16 +69,19 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		SemanticGraph graph;
 		String tokens[][], tags[][], lemmas[][], words[];
 		DependencyTree[] dtree;
-		int size, length;
 		Iterator<Lexel> lexels;
-
+		HashSet<Integer>indexes;
+		int id,size, length;
+		
 		size = sentences.size();
 		tokens = new String[size][];
 		tags = new String[size][];
 		lemmas = new String[size][];
 		dtree = new DependencyTree[size];
 		lexels = annotation.iterator();
-
+		id=annotation.getID();
+		indexes=mIndex.get(id);
+		
 		for (int i = 0; i < size; i++) {
 
 			sentence = sentences.get(i);
@@ -91,8 +98,14 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 				tags[i][j] = label.get(PartOfSpeechAnnotation.class);
 				lemmas[i][j] = label.get(LemmaAnnotation.class);
 
-				if (mIndexes.contains(label.beginPosition()))
+				if (indexes.contains(label.beginPosition())){
+					
+					if(!lexels.hasNext())
+						System.out.println("");
+					
 					lexels.next().set(i, j);
+				}
+					
 			}
 
 			tokens[i] = words;
@@ -103,6 +116,7 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		}
 
 		annotation.annote(tokens, mPOS ? tags : null, mLemma ? lemmas : null, mDepParse ? dtree : null);
+		mIndex.remove(id);
 	}
 
 	private DependencyTree getDependencyTree(SemanticGraph graph) {
