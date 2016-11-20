@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
 
@@ -11,7 +12,7 @@ import opennlp.tools.tokenize.TokenizerModel;
  * @author Simone Papandrea
  *
  */
-class OpenNLPTokenizer extends Tokenizer {
+class OpenNLPTokenizer extends Unit implements Tokenizer {
 
 	private static final String MODEL = "models/openNLP/en-token.bin";
 	private TokenizerModel mTokenizerModel;
@@ -22,7 +23,7 @@ class OpenNLPTokenizer extends Tokenizer {
 
 	}
 
-	@Override
+
 	public String[] tokenize(String sentence) {
 
 		return new TokenizerME(mTokenizerModel).tokenize(sentence);

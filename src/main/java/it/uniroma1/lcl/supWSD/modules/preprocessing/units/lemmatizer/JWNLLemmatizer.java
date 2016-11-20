@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import org.apache.commons.collections4.map.LRUMap;
 import it.uniroma1.lcl.supWSD.data.POSMap;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.POS;
@@ -18,7 +19,7 @@ import net.didion.jwnl.dictionary.Dictionary;
  * @author Simone Papandrea
  *
  */
-class JWNLLemmatizer extends Lemmatizer {
+class JWNLLemmatizer extends Unit implements Lemmatizer {
 
 	private static final int DEFAULT_CACHE_SIZE = 10000;
 	private static final String CONFIG = "resources/wndictionary/prop.xml";
@@ -70,7 +71,7 @@ class JWNLLemmatizer extends Lemmatizer {
 		mDictionary = Dictionary.getInstance();
 	}
 
-	@Override
+
 	public synchronized String[] lemmatize( String[] words, String[] POSTags) {
 
 		String lemmas[];

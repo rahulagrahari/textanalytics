@@ -36,6 +36,10 @@ public class TaggerFactory {
 				tagger = new OpenNLPTagger(model);
 				break;
 
+			case TREE_TAGGER:
+				tagger = new TreeTagger(model);
+				break;
+				
 			default:
 				tagger = new SimpleTagger(model);
 			}

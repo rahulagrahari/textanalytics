@@ -7,13 +7,14 @@ import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.trees.TypedDependency;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.dependencyTree.DependencyTree;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.dependencyTree.DependencyRelation;
 
 /**
  * @author Simone Papandrea
  *
  */
-class StanfordDependencyParser extends DependencyParser {
+class StanfordDependencyParser extends Unit implements DependencyParser {
 
 	private edu.stanford.nlp.parser.nndep.DependencyParser mParser;
 

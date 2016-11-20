@@ -8,7 +8,8 @@ public enum TaggerType {
 
 	OPEN_NLP("open_nlp"),
 	STANFORD("stanford"),
-	SIMPLE("simple");
+	SIMPLE("simple"),
+	TREE_TAGGER("tree_tagger");
 	
 	private final String mValue;
 	

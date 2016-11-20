@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
+
 /**
  * @author Simone Papandrea
  *
  */
-class PennTreeBankTokenizer extends Tokenizer {
+class PennTreeBankTokenizer extends Unit implements Tokenizer {
 
 	private static final String[] PENN_TREE_BANK_ANNOTATIONS = new String[] { "\\[(/?\\w+)\\]= |$1| ", "^\"=`` ",
 			"([ \\(\\[\\{<])\"=$1 `` ", "\\.\\.\\.= ... ", "([,;:@#$%&])= $1 ",
@@ -32,7 +34,6 @@ class PennTreeBankTokenizer extends Tokenizer {
 		mSegmenter = Pattern.compile("\\s+");
 	}
 
-	@Override
 	public String[] tokenize(String sentence) {
 
 		for (PennTreebankAnnotation pb : mPennTreebankAnnotations)

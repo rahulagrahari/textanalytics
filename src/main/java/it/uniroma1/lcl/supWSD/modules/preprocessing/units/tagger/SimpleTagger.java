@@ -2,11 +2,13 @@ package it.uniroma1.lcl.supWSD.modules.preprocessing.units.tagger;
 
 import java.util.List;
 
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
+
 /**
  * @author Simone Papandrea
  *
  */
-class SimpleTagger extends Tagger {
+class SimpleTagger extends Unit implements Tagger {
 
 	private final static String MODEL = "[ \t\n\r\f]+";
 	
@@ -16,7 +18,7 @@ class SimpleTagger extends Tagger {
 	}
 
 
-	@Override
+
 	public String[] tag(List<String> words) {
 
 		String[] tags,vals;

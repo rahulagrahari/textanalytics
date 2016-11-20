@@ -1,10 +1,12 @@
 package it.uniroma1.lcl.supWSD.modules.preprocessing.units.splitter;
 
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
+
 /**
  * @author Simone Papandrea
  *
  */
-class SimpleSplitter extends Splitter {
+class SimpleSplitter extends Unit implements Splitter {
 
 	private final static String MODEL= "\r\n|\r|\n";
 	
@@ -14,7 +16,6 @@ class SimpleSplitter extends Splitter {
 
 	}
 
-	@Override
 	public String[] split(String sentence) {
 
 		return sentence.split(this.getModel());

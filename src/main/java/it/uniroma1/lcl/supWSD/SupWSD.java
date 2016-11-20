@@ -60,7 +60,7 @@ public class SupWSD {
 		Preprocessor preprocessor;
 		Map<String, SortedSet<String>> senses = null;
 
-		//senses = readSenses(keys);
+		// senses = readSenses(keys);
 		config = Config.load(conf);
 		Serializer.setDirectory(config.getWorkingDir());
 		Writer.setDirectory(config.getWorkingDir());
@@ -147,7 +147,12 @@ public class SupWSD {
 			splitter = SplitterFactory.getInstance().getSplitter(splitterType, splitterModel);
 			tokenizer = TokenizerFactory.getInstance().getTokenizer(tokenizerType, tokenizerModel);
 			tagger = TaggerFactory.getInstance().getTagger(taggerType, taggerModel);
-			lemmatizer = LemmatizerFactory.getInstance().getLemmatizer(lemmatizerType, lemmatizerModel);
+
+			if (taggerType.equals(lemmatizerType) && tagger instanceof Lemmatizer)
+				lemmatizer = (Lemmatizer) tagger;
+			else
+				lemmatizer = LemmatizerFactory.getInstance().getLemmatizer(lemmatizerType, lemmatizerModel);
+
 			dependencyParser = DependencyParserFactory.getInstance().getDependecyParser(dependencyParserType,
 					dParserModel);
 

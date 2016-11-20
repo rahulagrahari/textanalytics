@@ -8,6 +8,7 @@ public enum LemmatizerType {
 
 	JWNL("jwnl"),
 	STANFORD("stanford"),
+	TREE_TAGGER("tree_tagger"),
 	SIMPLE("simple");
 	
 	private final String mValue;

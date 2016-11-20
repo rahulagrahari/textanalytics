@@ -1,11 +1,12 @@
 package it.uniroma1.lcl.supWSD.modules.preprocessing.units.lemmatizer;
 
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 
 /**
  * @author Simone Papandrea
  *
  */
-class SimpleLemmatizer extends Lemmatizer {
+class SimpleLemmatizer extends Unit implements Lemmatizer {
 
 	private final static String MODEL  = "/";
 	
@@ -15,7 +16,6 @@ class SimpleLemmatizer extends Lemmatizer {
 
 	}
 
-	@Override
 	public String[] lemmatize(String[] words,String[] POS)  {
 
 		String[] lemmas,vals;

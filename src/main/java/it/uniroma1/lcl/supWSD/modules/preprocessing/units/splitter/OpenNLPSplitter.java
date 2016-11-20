@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 
@@ -11,7 +12,7 @@ import opennlp.tools.sentdetect.SentenceModel;
  * @author Simone Papandrea
  *
  */
-class OpenNLPSplitter extends Splitter {
+class OpenNLPSplitter extends Unit implements Splitter {
 
 	private static final String MODEL = "models/openNLP/en-sent.bin";
 	private SentenceModel mSentenceModel;
@@ -22,7 +23,6 @@ class OpenNLPSplitter extends Splitter {
 
 	}
 
-	@Override
 	public String[] split(String sentence) {
 
 		SentenceDetectorME sentenceDetector;

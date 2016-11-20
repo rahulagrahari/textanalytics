@@ -3,12 +3,13 @@ package it.uniroma1.lcl.supWSD.modules.preprocessing.units.splitter;
 import java.util.List;
 import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 
 /**
  * @author Simone Papandrea
  *
  */
-class StanfordSplitter extends Splitter {
+class StanfordSplitter extends Unit implements Splitter {
 
 	 StanfordSplitter(String modelFile) {
 
@@ -16,7 +17,7 @@ class StanfordSplitter extends Splitter {
 
 	}
 
-	@Override
+	
 	public String[] split(String sentence) {
 
 		String[] sentences;

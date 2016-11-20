@@ -6,12 +6,13 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.process.CoreLabelTokenFactory;
 import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.process.TokenizerFactory;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 
 /**
  * @author Simone Papandrea
  *
  */
-class StanfordTokenizer extends Tokenizer {
+class StanfordTokenizer extends Unit implements Tokenizer {
 
 	private static final String MODEL = "";
 	private TokenizerFactory<CoreLabel> mTokenizerFactory;
@@ -22,7 +23,6 @@ class StanfordTokenizer extends Tokenizer {
 
 	}
 
-	@Override
 	public String[] tokenize(String sentence) {
 
 		String[] tokens;

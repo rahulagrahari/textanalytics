@@ -3,12 +3,13 @@ package it.uniroma1.lcl.supWSD.modules.preprocessing.units.tagger;
 import java.util.List;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 
 /**
  * @author Simone Papandrea
  *
  */
-class StanfordTagger extends Tagger {
+class StanfordTagger extends Unit implements Tagger {
 
 	private static final String MODEL = "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
 	private MaxentTagger mTagger;
@@ -18,7 +19,6 @@ class StanfordTagger extends Tagger {
 		super(modelFile);
 	}
 
-	@Override
 	public String[] tag(List<String> words) {
 
 		String[]tags;

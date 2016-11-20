@@ -1,12 +1,13 @@
 package it.uniroma1.lcl.supWSD.modules.preprocessing.units.lemmatizer;
 
 import edu.stanford.nlp.process.Morphology;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 
 /**
  * @author Simone Papandrea
  *
  */
-class StanfordLemmatizer extends Lemmatizer {
+class StanfordLemmatizer extends Unit implements Lemmatizer {
 
 	StanfordLemmatizer(String configFile) {
 
@@ -18,7 +19,6 @@ class StanfordLemmatizer extends Lemmatizer {
 
 	}
 
-	@Override
 	public String[] lemmatize(String[] words, String[] POSTags) {
 
 		String lemmas[];

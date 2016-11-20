@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.tokenizer.Tokenizer;
 import it.uniroma1.lcl.supWSD.data.Annotation;
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.DependencyParser;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.dependencyParser.dependencyTree.DependencyTree;
 import it.uniroma1.lcl.supWSD.modules.preprocessing.units.lemmatizer.Lemmatizer;
@@ -119,19 +120,19 @@ abstract class HybridPreprocessor implements Preprocessor {
 		try {
 
 			if (mSplitter != null)
-				threads.add(service.submit(mSplitter));
+				threads.add(service.submit((Unit)mSplitter));
 
 			if (mTokenizer != null)
-				threads.add(service.submit(mTokenizer));
+				threads.add(service.submit((Unit)mTokenizer));
 
 			if (mTagger != null)
-				threads.add(service.submit(mTagger));
+				threads.add(service.submit((Unit)mTagger));
 
 			if (mLemmatizer != null)
-				threads.add(service.submit(mLemmatizer));
+				threads.add(service.submit((Unit)mLemmatizer));
 
 			if (mDependencyParser != null)
-				threads.add(service.submit(mDependencyParser));
+				threads.add(service.submit((Unit)mDependencyParser));
 
 			for (Future<Void> thread : threads)
 				thread.get();
@@ -179,19 +180,19 @@ abstract class HybridPreprocessor implements Preprocessor {
 	public void unload() {
 
 		if (mSplitter != null)
-			mSplitter.unload();
+			((Unit)mSplitter).unload();
 
 		if (mTokenizer != null)
-			mTokenizer.unload();
+			((Unit)mTokenizer).unload();
 
 		if (mTagger != null)
-			mTagger.unload();
+			((Unit)mTagger).unload();
 
 		if (mLemmatizer != null)
-			mLemmatizer.unload();
+			((Unit)mLemmatizer).unload();
 
 		if (mDependencyParser != null)
-			mDependencyParser.unload();
+			((Unit)mDependencyParser).unload();
 	}
 	
 

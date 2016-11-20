@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import it.uniroma1.lcl.supWSD.modules.preprocessing.units.Unit;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 
@@ -12,7 +13,7 @@ import opennlp.tools.postag.POSTaggerME;
  * @author Simone Papandrea
  *
  */
-class OpenNLPTagger extends Tagger {
+class OpenNLPTagger extends Unit implements Tagger {
 
 	private static final String MODEL = "models/openNLP/en-pos-maxent.bin";
 	private POSModel mPOSModel;
@@ -23,7 +24,6 @@ class OpenNLPTagger extends Tagger {
 
 	}
 
-	@Override
 	public String[] tag(List<String> words) {
 					
 		return new POSTaggerME(mPOSModel).tag(words.toArray(new String[words.size()]));
