@@ -84,7 +84,8 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="stanford" />
 			<xs:enumeration value="open_nlp" />
-			<xs:enumeration value="simple" />
+				<xs:enumeration value="tree_tagger" />
+			<xs:enumeration value="simple" />			
 			<xs:enumeration value="none" />
 		</xs:restriction>
 	</xs:simpleType>
@@ -101,6 +102,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="stanford" />
 			<xs:enumeration value="jwnl" />
+			<xs:enumeration value="tree_tagger" />
 			<xs:enumeration value="simple" />
 			<xs:enumeration value="none" />
 		</xs:restriction>
