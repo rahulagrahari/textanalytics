@@ -11,14 +11,15 @@ import it.uniroma1.lcl.supWSD.data.Annotation;
  * @author Simone Papandrea
  *
  */
-abstract class StanfordPreprocessor implements Preprocessor {
+public abstract class StanfordPreprocessor implements Preprocessor {
 
 	private StanfordCoreNLP mPipeline;
-	private final String mAnnotators;
 	final boolean mPOS;
 	final boolean mLemma;
 	final boolean mDepParse;
+	private final Properties mProperties;
 
+	
 	StanfordPreprocessor(boolean split, boolean pos, boolean lemma, boolean depparse,boolean parse) {
 
 		String annotators;
@@ -41,17 +42,26 @@ abstract class StanfordPreprocessor implements Preprocessor {
 		if (depparse && parse)
 			annotators += ",depparse";
 
-		this.mAnnotators = annotators;
+		this.mProperties = new Properties();
+		this.mProperties.setProperty("annotators", annotators);
+	}
+
+	
+	public void setPOSModel(String model){
+		
+		this.mProperties.setProperty("pos.model", model);
+	}
+	
+	public void setDepparseSModel(String model){
+		
+		this.mProperties.setProperty("depparse.model", model);
 	}
 
 	@Override
 	public void load() {
 
-		Properties props = new Properties();
-		props.setProperty("annotators", mAnnotators);
-		props.setProperty("tokenize.options", "normalizeParentheses=false,normalizeOtherBrackets=false,untokenizable=allKeep,escapeForwardSlashAsterisk=false,ptb3Escaping=false");
-		
-		this.mPipeline = new StanfordCoreNLP(props);
+		this.mProperties.setProperty("tokenize.options", "normalizeParentheses=false,normalizeOtherBrackets=false,untokenizable=allKeep,escapeForwardSlashAsterisk=false,ptb3Escaping=false");
+		this.mPipeline = new StanfordCoreNLP(this.mProperties);
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class HybridXMLPreprocessor extends HybridPreprocessor {
 				
 		sentences = split(annotation.getText());
 		words = tokenize(sentences);
-
+		
 		if (words != null){
 			
 			tokens =getTokens(words, annotation.iterator());

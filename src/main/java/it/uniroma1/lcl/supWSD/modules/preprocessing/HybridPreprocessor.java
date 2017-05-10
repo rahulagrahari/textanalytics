@@ -21,7 +21,7 @@ import it.uniroma1.lcl.supWSD.modules.preprocessing.units.tagger.Tagger;
  * @author Simone Papandrea
  *
  */
-abstract class HybridPreprocessor implements Preprocessor {
+public abstract class HybridPreprocessor implements Preprocessor {
 
 	private final Splitter mSplitter;
 	private final Tokenizer mTokenizer;
