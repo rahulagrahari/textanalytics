@@ -55,7 +55,7 @@ public class SemEval15Handler extends SemEval7Handler {
 			this.addWord(mWF.trim()+" ");
 			
 			if(mLemma!=null)
-				addInstance(mLemma.trim().replaceAll("[\\s\\-]", "_").toLowerCase()+"."+mPOS);
+				addInstance(formatInstance(mLemma)+"."+mPOS);
 			break;
 			
 		default:

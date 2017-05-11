@@ -6,11 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import it.uniroma1.lcl.supWSD.data.Annotation;
 import it.uniroma1.lcl.supWSD.data.Lexel;
 import it.uniroma1.lcl.supWSD.modules.parser.xml.semeval7.SemEval7Handler;
 
@@ -100,8 +97,9 @@ public class SensEvalHandler extends SemEval7Handler {
 				mHead= "percent";
 		
 			instance+=mHead;
-			addInstance(instance.replaceAll("[\\s\\-]", "_").toLowerCase());
-			addWord(Annotation.ANNOTATION_TAG + mHead+Annotation.ANNOTATION_TAG+" ");
+			addInstance(formatInstance(instance));
+			
+			addWord(formatAnnotation(mHead)+" ");
 			break;
 
 		case SAT:

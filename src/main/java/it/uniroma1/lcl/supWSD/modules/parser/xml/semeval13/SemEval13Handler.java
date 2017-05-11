@@ -2,8 +2,6 @@ package it.uniroma1.lcl.supWSD.modules.parser.xml.semeval13;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import it.uniroma1.lcl.supWSD.data.Annotation;
 import it.uniroma1.lcl.supWSD.modules.parser.xml.semeval7.SemEval7Attributes;
 import it.uniroma1.lcl.supWSD.modules.parser.xml.semeval7.SemEval7Handler;
 
@@ -65,8 +63,8 @@ public class SemEval13Handler extends SemEval7Handler {
 			if(mPOS==null)
 				mPOS="n";
 			
-			addWord(Annotation.ANNOTATION_TAG + mInstance.trim().replaceAll("[\\s\\-]", "_")+Annotation.ANNOTATION_TAG+" ");
-			addInstance(mLemma.trim().replaceAll("[\\s\\-]", "_").toLowerCase()+"."+mPOS);
+			addWord(formatAnnotation(mInstance)+" ");
+			addInstance(formatInstance(mLemma)+"."+mPOS);
 			break;
 			
 		case WF:

@@ -73,8 +73,8 @@ public class SemEval7Handler extends XMLHandler {
 
 		case INSTANCE:
 			
-			addWord(Annotation.ANNOTATION_TAG + mInstance.trim().replaceAll("[\\s\\-]", "_")+Annotation.ANNOTATION_TAG+" ");
-			addInstance(mLemma.trim().replaceAll("[\\s\\-]", "_").toLowerCase()+"."+mPOS);
+			addWord(formatAnnotation(mInstance)+" ");
+			addInstance(formatInstance(mLemma)+"."+mPOS);
 			break;
 
 		default:
@@ -120,6 +120,12 @@ public class SemEval7Handler extends XMLHandler {
 			mLexels.put(mID,new Lexel(mID, instance));	
 	}
 
+
+	protected String formatInstance(String lemma){
+		
+		return lemma.trim().replaceAll("[\\s\\-]", "_").toLowerCase();
+	}
+	
 	protected final void notifyAnnotations() throws SAXException {
 		
 		try {

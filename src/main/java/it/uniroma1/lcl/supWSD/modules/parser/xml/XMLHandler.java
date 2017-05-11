@@ -2,6 +2,8 @@ package it.uniroma1.lcl.supWSD.modules.parser.xml;
 
 import java.util.LinkedList;
 import org.xml.sax.helpers.DefaultHandler;
+
+import it.uniroma1.lcl.supWSD.data.Annotation;
 import it.uniroma1.lcl.supWSD.modules.parser.AnnotationListener;
 
 /**
@@ -40,6 +42,13 @@ public abstract class XMLHandler extends DefaultHandler {
 		
 		this.mAnnotationListener=annotationListener;
 	
+	}
+	
+	protected String formatAnnotation(String text){
+		
+		text=text.trim().replaceAll("[\\s\\-]", "_").replaceAll("[^A-Za-z0-9_]", "");
+		
+		return Annotation.ANNOTATION_TAG+text+Annotation.ANNOTATION_TAG;
 	}
 	
 }

@@ -77,7 +77,7 @@ public class LexicalHandler extends XMLHandler {
 			
 		case HEAD:
 
-			mSentence +=Annotation.ANNOTATION_TAG+ mHead.trim().replaceAll("[\\s\\-]", "_")+Annotation.ANNOTATION_TAG;
+			mSentence +=formatAnnotation(mHead);
 			break;
 			
 		default:
