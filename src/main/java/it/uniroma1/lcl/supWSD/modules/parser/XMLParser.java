@@ -45,6 +45,7 @@ public class XMLParser extends Parser implements AnnotationListener {
 		try {
 			this.mParserListener.annotationsReady(mAnnotations);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new SAXException(e);
 		}
 	}
