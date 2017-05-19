@@ -1,5 +1,6 @@
 # supWSD
 supWSD is a supervised word sense disambiguation system.  The flexible framework of supWSD allows users to combine different preprocessing modules, to select features extractors and choose which classifier to use. SupWSD is very light and has very small memory requirements; it provides a simple xml file to configure the system.
+<a href="http://supwsdweb-si3p-supwsdweb.1d35.starter-us-east-1.openshiftapps.com/supwsdweb/index.jsp"  target="_blank">Demo online</a>
 
 ## Files & Directories
 Name | Description
