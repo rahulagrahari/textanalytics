@@ -35,7 +35,7 @@ public class Answer implements CharSequence,Comparable<Answer>{
 			
 			Answer answer=(Answer) arg0;
 			
-			return this.getClass().equals(answer.getClass());
+			return this.getCls().equals(answer.getCls());
 		}
 		
 		return false;
