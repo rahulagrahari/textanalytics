@@ -77,7 +77,7 @@ preprocessing |  | within this tag you can set the components to be used in the 
 splitter | model | which component to use for sentence splitting: **stanford**, **open_nlp**, **simple**, **none**.
 tokenizer | model |  which component to use for sentence tokenization: **stanford**, **open_nlp**, **penn_tree_bank**, **simple**, **none**.
 tagger | model | which component to use for part of speech tagging: **stanford**, **open_nlp**, **tree_tagger**, **simple**, **none**.
-lemmatizer | model | which component to use for lemmatization: **stanford**, **jwnl**, **tree_tagger**, **simple**, **none**.
+lemmatizer | model | which component to use for lemmatization: **stanford**, **open_nlp**, **jwnl**, **tree_tagger**, **simple**, **none**.
 dependency_parser |  model| which component to use for dependency parsing: **stanford**, **none**.
 features |  |  which features have to be extracted. To disable an extractor, set the tag's value to false.
 pos_tags | cutoff |  **cutoff**: remove all the elements less than *threshold* in frequency.
