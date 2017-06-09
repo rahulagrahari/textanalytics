@@ -101,6 +101,7 @@
 	<xs:simpleType name="lemmatizerType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="stanford" />
+			<xs:enumeration value="open_nlp" />
 			<xs:enumeration value="jwnl" />
 			<xs:enumeration value="tree_tagger" />
 			<xs:enumeration value="simple" />
