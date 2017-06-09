@@ -7,7 +7,7 @@
 		<splitter model="">open_nlp</splitter>
 		<tokenizer model="">penn_tree_bank</tokenizer>
 		<tagger model="">open_nlp</tagger>
-		<lemmatizer model="">jwnl</lemmatizer>
+		<lemmatizer model="">open_nlp</lemmatizer>
 		<dependency_parser model="">none</dependency_parser>
 	</preprocessing>
 	<extraction>
