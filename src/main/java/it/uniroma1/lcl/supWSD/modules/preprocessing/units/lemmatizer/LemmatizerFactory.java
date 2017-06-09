@@ -36,6 +36,10 @@ public class LemmatizerFactory {
 				lemmatizer = new JWNLLemmatizer(model);
 				break;
 
+			case OPEN_NLP:
+				lemmatizer = new OpenNLPLemmatizer(model);
+				break;
+				
 			default:
 				lemmatizer = new SimpleLemmatizer(model);
 			}

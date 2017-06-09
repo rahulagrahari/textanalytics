@@ -2,6 +2,7 @@ package it.uniroma1.lcl.supWSD.modules.classification;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,7 +23,7 @@ import it.uniroma1.lcl.supWSD.modules.classification.instances.AmbiguityTrain;
 import it.uniroma1.lcl.supWSD.modules.classification.instances.TermsVector;
 import it.uniroma1.lcl.supWSD.modules.extraction.features.Feature;
 import opennlp.tools.ml.maxent.GISModel;
-import opennlp.tools.ml.maxent.io.ObjectGISModelWriter;
+import opennlp.tools.ml.maxent.io.BinaryGISModelWriter;
 
 /**
  * @author Simone Papandrea
@@ -88,7 +89,6 @@ public class Serializer {
 				} catch (NumberFormatException e) {
 
 					e.printStackTrace();
-
 				}
 			}
 
@@ -161,26 +161,41 @@ public class Serializer {
 	public static void writeModel(String lexel, Object model) throws IOException {
 
 		final String filename;
-		ObjectOutputStream stream = null;
+		GZIPOutputStream gzipStream;
 
 		filename = DIRECTORY + File.separator + MODELS_DIR + File.separator + lexel + ".model.gz";
+		gzipStream = new GZIPOutputStream(new FileOutputStream(filename));
 
 		try {
 
-			stream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(filename)));
-
 			if (GISModel.class.isInstance(model)) {
 
-				ObjectGISModelWriter writer = new ObjectGISModelWriter((GISModel) model, stream);
-				writer.persist();
+				DataOutputStream stream = new DataOutputStream(gzipStream);
+				BinaryGISModelWriter writer = new BinaryGISModelWriter((GISModel) model, stream);
 
-			} else
-				stream.writeObject(model);
+				try {
+					writer.persist();
+				} finally {
+
+					writer.close();
+					stream.close();
+				}
+
+			} else {
+
+				ObjectOutputStream stream = new ObjectOutputStream(gzipStream);
+
+				try {
+					stream.writeObject(model);
+				} finally {
+
+					stream.close();
+				}
+			}
 
 		} finally {
 
-			if (stream != null)
-				stream.close();
+			gzipStream.close();
 		}
 	}
 
@@ -198,11 +213,11 @@ public class Serializer {
 		final Path path;
 
 		try {
-			path = Paths.get(DIRECTORY, MODELS_DIR, lexel+ ".model.gz");
+			path = Paths.get(DIRECTORY, MODELS_DIR, lexel + ".model.gz");
 			exist = Files.exists(path);
 		} catch (InvalidPathException e) {
 		}
-		
+
 		return exist;
 	}
 

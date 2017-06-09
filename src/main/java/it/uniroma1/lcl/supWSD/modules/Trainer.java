@@ -33,7 +33,7 @@ public class Trainer extends Analyzer<AmbiguityTrain> {
 	}
 
 	@Override
-	public void classify(Collection<AmbiguityTrain> ambiguities) {
+	protected void classify(Collection<AmbiguityTrain> ambiguities) {
 
 		for (AmbiguityTrain ambiguity : ambiguities) {
 			

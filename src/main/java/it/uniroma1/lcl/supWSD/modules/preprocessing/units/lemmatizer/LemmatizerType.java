@@ -9,7 +9,8 @@ public enum LemmatizerType {
 	JWNL("jwnl"),
 	STANFORD("stanford"),
 	TREE_TAGGER("tree_tagger"),
-	SIMPLE("simple");
+	SIMPLE("simple"),
+	OPEN_NLP("open_nlp");
 	
 	private final String mValue;
 	

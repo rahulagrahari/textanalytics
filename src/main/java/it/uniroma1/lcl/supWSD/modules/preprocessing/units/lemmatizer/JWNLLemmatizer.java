@@ -71,8 +71,7 @@ class JWNLLemmatizer extends Unit implements Lemmatizer {
 		mDictionary = Dictionary.getInstance();
 	}
 
-
-	public synchronized String[] lemmatize( String[] words, String[] POSTags) {
+	public String[] lemmatize(String[] words, String[] POSTags) {
 
 		String lemmas[];
 		int length;
@@ -88,7 +87,7 @@ class JWNLLemmatizer extends Unit implements Lemmatizer {
 
 	private String getLemma(String word, String tag) {
 
-		String lemma, key, subword;
+		String lemma, key, subword, temp;
 		String tokens[];
 		POS POS;
 		int length, l;
@@ -100,10 +99,11 @@ class JWNLLemmatizer extends Unit implements Lemmatizer {
 
 			POS = getPOS(tag);
 			key = word + tag;
+			temp = this.mCache.get(key);
 
-			if (this.mCache.containsKey(key))
+			if (temp != null)
 
-				lemma = this.mCache.get(key);
+				lemma = temp;
 
 			else {
 
@@ -153,12 +153,15 @@ class JWNLLemmatizer extends Unit implements Lemmatizer {
 	@SuppressWarnings("unchecked")
 	private String getBaseForm(String word, POS POS) throws JWNLException {
 
-		String lemma, l;
+		String lemma= word, l;
 		List<String> indexWords;
 		int lemmas;
 
-		lemma = word;
-		indexWords = mDictionary.getMorphologicalProcessor().lookupAllBaseForms(POS, word);
+		synchronized (this) {
+
+			indexWords = mDictionary.getMorphologicalProcessor().lookupAllBaseForms(POS, word);
+		}
+
 		lemmas = indexWords.size();
 
 		if (lemmas > 0) {
@@ -216,8 +219,8 @@ class JWNLLemmatizer extends Unit implements Lemmatizer {
 	public void unload() {
 
 		this.mCache.clear();
-		
-		if(mDictionary!=null)
+
+		if (mDictionary != null)
 			mDictionary.close();
 
 		if (mInit) {

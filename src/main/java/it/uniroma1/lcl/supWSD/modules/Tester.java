@@ -45,7 +45,7 @@ public class Tester extends Analyzer<AmbiguityTest> {
 	}
 
 	@Override
-	public void classify(Collection<AmbiguityTest> ambiguities) {
+	protected void classify(Collection<AmbiguityTest> ambiguities) {
 
 		for (AmbiguityTest ambiguity : ambiguities)
 			 mEvaluator.evaluate(ambiguity);
