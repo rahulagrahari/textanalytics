@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+	<xs:element name="supWSD">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="working_directory" />
+				<xs:element ref="parser" />
+				<xs:element ref="preprocessing" />
+				<xs:element ref="extraction" />
+				<xs:element ref="classifier" />
+				<xs:element ref="writer" />
+				<xs:element ref="sense_inventory" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="working_directory" type="xs:string" />
+	<xs:simpleType name="parserType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="lexical" />
+			<xs:enumeration value="senseval" />
+			<xs:enumeration value="semeval7" />
+			<xs:enumeration value="semeval13" />
+			<xs:enumeration value="semeval15" />
+			<xs:enumeration value="plain" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="parser">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="parserType">
+					<xs:attribute name="mns" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="preprocessing">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="splitter" />
+				<xs:element ref="tokenizer" />
+				<xs:element ref="tagger" />
+				<xs:element ref="lemmatizer" />
+				<xs:element ref="dependency_parser" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="splitterType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="stanford" />
+			<xs:enumeration value="open_nlp" />
+			<xs:enumeration value="simple" />
+			<xs:enumeration value="none" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="splitter">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="splitterType">
+					<xs:attribute name="model" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="tokenizerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="stanford" />
+			<xs:enumeration value="open_nlp" />
+			<xs:enumeration value="penn_tree_bank" />
+			<xs:enumeration value="simple" />
+			<xs:enumeration value="none" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="tokenizer">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="tokenizerType">
+					<xs:attribute name="model" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="taggerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="stanford" />
+			<xs:enumeration value="open_nlp" />
+				<xs:enumeration value="tree_tagger" />
+			<xs:enumeration value="simple" />			
+			<xs:enumeration value="none" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="tagger">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="taggerType">
+					<xs:attribute name="model" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="lemmatizerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="stanford" />
+			<xs:enumeration value="open_nlp" />
+			<xs:enumeration value="jwnl" />
+			<xs:enumeration value="tree_tagger" />
+			<xs:enumeration value="simple" />
+			<xs:enumeration value="none" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="lemmatizer">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="lemmatizerType">
+					<xs:attribute name="model" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="dependencyParserType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="stanford" />
+			<xs:enumeration value="none" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="dependency_parser">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="dependencyParserType">
+					<xs:attribute name="model" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="extraction">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="features" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="features">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="pos_tags" />
+				<xs:element ref="local_collocations" />
+				<xs:element ref="surrounding_words" />
+				<xs:element ref="word_embeddings" />
+				<xs:element ref="syntactic_relations" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="cutoffType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="pos_tags">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:boolean">
+					<xs:attribute name="cutoff" use="required" type="cutoffType" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="local_collocations">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:boolean">
+					<xs:attribute name="cutoff" use="required" type="cutoffType" />
+						<xs:attribute name="sequences"  />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="windowType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="-1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="surrounding_words">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:boolean">
+				<xs:attribute name="stopwords" />
+					<xs:attribute name="cutoff" use="required" type="cutoffType" />
+					<xs:attribute name="window" use="required" type="windowType" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="cacheType">
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="strategyType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EXP" />
+			<xs:enumeration value="FRA" />
+			<xs:enumeration value="AVG" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="word_embeddings">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:boolean">
+					<xs:attribute name="cache" use="required" type="cacheType" />
+					<xs:attribute name="strategy" use="required" type="strategyType" />
+					<xs:attribute name="vectors" use="required" />
+					<xs:attribute name="vocab" use="required" />
+					<xs:attribute name="window" use="required" type="windowType" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="syntactic_relations" type="xs:boolean" />
+	<xs:element name="classifier">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="liblinear" />
+				<xs:enumeration value="libsvm" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="writer">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="all" />
+				<xs:enumeration value="single" />
+				<xs:enumeration value="plain" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:simpleType name="senseInventoryType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="wordnet" />
+			<xs:enumeration value="babelnet" />
+			<xs:enumeration value="none" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="sense_inventory">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="senseInventoryType">
+					<xs:attribute name="dict" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
