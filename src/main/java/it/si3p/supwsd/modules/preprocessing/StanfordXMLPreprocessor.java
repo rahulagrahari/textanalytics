@@ -14,7 +14,7 @@ import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphEdge;
-import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.BasicDependenciesAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 import it.si3p.supwsd.data.Annotation;
 import it.si3p.supwsd.data.Lexel;
@@ -103,7 +103,7 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 			}
 
 			tokens[i] = words;
-			graph = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
+			graph = sentence.get(BasicDependenciesAnnotation.class);
 
 			if (graph != null)
 				dtree[i] = getDependencyTree(graph);
