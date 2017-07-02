@@ -12,9 +12,9 @@ public class SurroundingWord extends Feature{
 	private static final String KEY_PREFIX="SW_";
 	
 	
-	public SurroundingWord(String value) {
+	public SurroundingWord(String key,double value) {
 		
-		super(KEY_PREFIX+value,"1");
+		super(KEY_PREFIX+key,"1",value);
 		
 	}
 

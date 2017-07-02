@@ -39,14 +39,15 @@ public class POSTagsExtractor extends FeatureExtractor {
 		Token[] tokens;
 		String POS;
 		int id, min, max, length;
-
+		double val;
+		
 		tokens = annotation.getTokens(lexel);
 		length = tokens.length;
 		id = lexel.getTokenIndex();
 		min = id - mLeftPOS;
 		max = id + mRightPOS;
 		features = new Vector<Feature>(max - min + 1);
-
+			
 		for (int i = min; i <= max; i++) {
 
 			if (i > -1 && i < length)
@@ -54,7 +55,8 @@ public class POSTagsExtractor extends FeatureExtractor {
 			else
 				POS = DEFAULT;
 
-			features.add(new POSTag(i - id, POS));
+			val=1-(Math.abs(i-id)/(length*1.0));
+			features.add(new POSTag(i - id, POS,val));
 		}
 
 		return features;

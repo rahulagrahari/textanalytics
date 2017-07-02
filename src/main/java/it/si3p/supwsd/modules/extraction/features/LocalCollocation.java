@@ -13,9 +13,9 @@ public class LocalCollocation extends POSTag{
 	private final int mJ;
 
 	
-	public LocalCollocation(int i, int j, String value) {
+	public LocalCollocation(int i, int j, String name,double value) {
 		
-		super(KEY_PREFIX+i+j,i,value.toLowerCase());
+		super(KEY_PREFIX+i+j,i,name,value);
 
 		this.mJ=j;
 	}
