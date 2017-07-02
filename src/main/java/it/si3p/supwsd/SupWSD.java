@@ -65,7 +65,7 @@ public class SupWSD {
 		senses = readSenses(keys);
 		config = Config.load(conf);
 		Serializer.setDirectory(config.getWorkingDir());
-		Writer.setDirectory(config.getWorkingDir());
+		//Writer.setDirectory(config.getWorkingDir());
 		parserType = config.getParserType();
 		parser = ParserFactory.getInstance().getParser(parserType);
 		classifier = ClassifierFactory.getInstance().getClassifier(config.getClassifierType());
