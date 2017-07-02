@@ -51,7 +51,5 @@ public class HybridPlainPreprocessor extends HybridPreprocessor {
 
 			annotation.annote(words, POS, lemmas, dependencies);
 		}
-		 else
-			annotation.annote(sentences);
 	}	
 }

@@ -22,7 +22,6 @@ public class Annotation implements Iterable<Lexel> {
 	private final List<Token[]> mTokens;
 	private final SortedSet<Lexel> mLexels;
 	private final List<DependencyTree> mDependencyTrees;
-	private final List<String> mSentences;
 
 	public Annotation(int id,String sentence) {
 
@@ -31,7 +30,6 @@ public class Annotation implements Iterable<Lexel> {
 		this.mTokens = new ArrayList<Token[]>();
 		this.mLexels = new TreeSet<Lexel>();
 		this.mDependencyTrees = new ArrayList<DependencyTree>();
-		this.mSentences = new ArrayList<String>();
 	}
 
 	public void addLexel(Lexel lexel) {
@@ -64,10 +62,6 @@ public class Annotation implements Iterable<Lexel> {
 		return getTokens(lexel.getSentenceIndex());
 	}
 
-	public List<Token[]> getTokenSentences() {
-
-		return this.mTokens;
-	}
 
 	public DependencyTree getDepedencyTree(int index) {
 
@@ -84,26 +78,11 @@ public class Annotation implements Iterable<Lexel> {
 		return this.mDependencyTrees;
 	}
 	
-	public String getSentence(int index) {
+	public List<Token[]> getSentences() {
 
-		return this.mSentences.get(index);
+		return mTokens;
 	}
-	
-	public String getSentence(Lexel lexel) {
-
-		return getSentence(lexel.getSentenceIndex());
-	}
-	
-	public List<String> getSentences() {
-
-		return this.mSentences;
-	}
-	
-	public int getSentencesCount() {
-
-		return Math.max(this.mTokens.size(),this.mSentences.size());
-	}
-	
+		
 	public SortedSet<Lexel> getLexels() {
 
 		return this.mLexels;
@@ -143,11 +122,6 @@ public class Annotation implements Iterable<Lexel> {
 			this.mDependencyTrees.add(dependecyTree);	
 	}
 	
-	public void annote(String[] sentences) {
-		
-		for(String sentence:sentences)
-			mSentences.add(sentence);
-	}
 		
 	public boolean isAnnotated() {
 
@@ -158,7 +132,6 @@ public class Annotation implements Iterable<Lexel> {
 
 		this.mTokens.clear();
 		this.mDependencyTrees.clear();
-		this.mSentences.clear();
 	}
 
 	@Override

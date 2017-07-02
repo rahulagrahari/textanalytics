@@ -48,8 +48,6 @@ public class HybridXMLPreprocessor extends HybridPreprocessor {
 
 			annotation.annote(tokens, POS, lemmas, dependencies);
 		}
-		 else
-			annotation.annote(sentences);
 	}
 	
 	private String[][] getTokens(String[][] words,Iterator<Lexel> iterator) {
