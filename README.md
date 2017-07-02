@@ -88,7 +88,3 @@ syntactic_relations | | extract different types of syntactic relations depending
 classifier | | **liblinear** or **libsvm** : the classifier trains a model for each annotated word. The model will be used to classify test instances.
 writer |  | **all**: export results to a file; **single**: generate a file for each test instance; **plain**: create a plain text file, a sentence for each line with senses and probabilities for disambiguated words.
 sense_inventory | dict | the sense inventory used for testing instances: **wordnet**, **babelnet** or **none**. For Wordnet you must set the attribute **dict** and specify the path of the WordNet dictionary.
-
-# License
-supWSD and its API are licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License.
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
