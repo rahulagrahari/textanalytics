@@ -12,15 +12,15 @@ public class POSTag extends Feature {
 	private static final String KEY_PREFIX = "POS";
 	private final int mI;
 
-	public POSTag(int index, String name, double value) {
+	public POSTag(int index, String name) {
 
-		this(KEY_PREFIX + index, index, name, value);
+		this(KEY_PREFIX + index, index, name);
 
 	}
 
-	POSTag(String key, int index, String name,double value) {
+	POSTag(String key, int index, String name) {
 
-		super(key, name, value);
+		super(key, name);
 
 		this.mI = index;
 	}

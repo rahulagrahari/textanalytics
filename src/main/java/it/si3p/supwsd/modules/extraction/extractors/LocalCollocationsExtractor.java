@@ -51,9 +51,8 @@ public class LocalCollocationsExtractor extends FeatureExtractor {
 		Vector<Feature> features;
 		Token[] tokens;
 		String name, token, indexes[];
-		int i, j, start, end,count;
+		int i, j, start, end;
 		int id, length;
-		double value;
 		
 		tokens = annotation.getTokens(lexel);
 		id = lexel.getTokenIndex();
@@ -71,8 +70,6 @@ public class LocalCollocationsExtractor extends FeatureExtractor {
 				name = "";
 				start = id + i;
 				end = id + j;
-				value=0;
-				count=0;
 				
 				for (int k = start; k <= end; k++) {
 					
@@ -84,13 +81,10 @@ public class LocalCollocationsExtractor extends FeatureExtractor {
 							token = DEFAULT;
 
 						name += " " + token;
-						value+=1-(Math.abs(k-id)/(length*1.0));
-						count++;
 					}
 				}
 				
-				value/=count;
-				features.add(new LocalCollocation(i, j, name.trim(),value));
+				features.add(new LocalCollocation(i, j, name.trim()));
 
 			} else
 				throw new IllegalArgumentException("Invalid Local Collocations");

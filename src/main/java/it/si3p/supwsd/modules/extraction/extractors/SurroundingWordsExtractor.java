@@ -49,33 +49,17 @@ public class SurroundingWordsExtractor extends FeatureExtractor {
 		Feature feature;
 		List<Token[]> sentences;
 		int index, id;
-		int min = 0, max,length,offset,size=0,pre=0;
-		double value;
+		int min = 0, max;
 
 		id = lexel.getTokenIndex();
 		index = lexel.getSentenceIndex();
 		sentences=annotation.getSentences();
 		max = sentences.size() - 1;
-		offset=id;
 				
 		if (mWindowSize > -1){
 			
 			min = Math.max(min, index - mWindowSize);
 			max = Math.min(max, index + mWindowSize);
-		}
-			
-		for(int i=0;i<=max;i++){
-			
-			length=sentences.get(i).length;
-			size+=length;
-			
-			if(i<index){
-				
-				offset+=length;
-				
-				if(i<min)
-					pre+=length;
-			}
 		}
 		
 		features = new HashSet<Feature>();
@@ -83,19 +67,15 @@ public class SurroundingWordsExtractor extends FeatureExtractor {
 		for (int i = min; i <= max; i++) {
 
 			tokens = sentences.get(i);
-			length=tokens.length;
-			
-			for (int j = 0; j < length; j++) {
+
+			for (int j = 0; j < tokens.length; j++) {
 
 				token = tokens[j];
-				value=1-(Math.abs(j+pre-offset)/(size*1.0));
-				feature=new SurroundingWord(token.getLemma(),value);
+				feature=new SurroundingWord(token.getLemma());
 				
 				if ((i != index || j != id) && !features.contains(feature) && mStopWordsFilter.filter(token.getWord()))
 					features.add(feature);		
 			}
-			
-			pre+=length;
 		}
 		
 		return features;
