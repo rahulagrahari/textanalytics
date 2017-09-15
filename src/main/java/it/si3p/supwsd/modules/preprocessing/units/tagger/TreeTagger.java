@@ -43,7 +43,7 @@ public class TreeTagger extends Unit implements Tagger, Lemmatizer {
 	
 	public synchronized String[] tag(List<String> words) {
 
-		String[] tags,lemmas;
+		final String[] tags,lemmas;
 		int size;
 		
 		size=words.size();

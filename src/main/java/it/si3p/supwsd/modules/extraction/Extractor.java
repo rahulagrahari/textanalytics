@@ -39,7 +39,7 @@ public class Extractor {
 
 		try {
 
-			for (FeatureExtractor extractor : this.mFeatureExtractors)
+			for (final FeatureExtractor extractor : this.mFeatureExtractors)
 
 				featureTasks.add(service.submit(new Callable<Void>() {
 
