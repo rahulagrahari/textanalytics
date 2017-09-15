@@ -211,7 +211,7 @@ public class SupWSD {
 				tokens = line.split(regex);
 				senses = new TreeSet<String>();
 
-				for (int i = 2; i < tokens.length; i++) {
+				for (int i = 1; i < tokens.length; i++) {
 
 					sense = tokens[i];
 
@@ -221,7 +221,8 @@ public class SupWSD {
 					senses.add(sense);
 				}
 
-				keys.put(tokens[1], senses);
+				
+				keys.put(tokens[0], senses);
 			}
 
 		}
