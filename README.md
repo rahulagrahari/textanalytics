@@ -88,3 +88,20 @@ syntactic_relations | | extract different types of syntactic relations depending
 classifier | | **liblinear** or **libsvm** : the classifier trains a model for each annotated word. The model will be used to classify test instances.
 writer |  | **all**: export results to a file; **single**: generate a file for each test instance; **plain**: create a plain text file, a sentence for each line with senses and probabilities for disambiguated words.
 sense_inventory | dict | the sense inventory used for testing instances: **wordnet**, **babelnet** or **none**. For Wordnet you must set the attribute **dict** and specify the path of the WordNet dictionary.
+
+## References
+
+If you use this system, please cite the following paper:
+
+```
+@InProceedings{papandreaetal:EMNLP2017Demos,
+  author    = {Papandrea, Simone  and  Raganato, Alessandro  and  Delli Bovi, Claudio},
+  title     = {SupWSD: A Flexible Toolkit for Supervised Word Sense Disambiguation},
+  booktitle = {Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing: System Demonstrations},
+  month     = {September},
+  year      = {2017},
+  address   = {Copenhagen, Denmark},
+  publisher = {Association for Computational Linguistics},
+  pages     = {103--108}
+}
+```
