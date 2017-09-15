@@ -25,6 +25,7 @@ public class SemEval15Handler extends SemEval7Handler {
 
 		case WF:
 
+			mWF="";
 			mLemma=attributes.getValue(SemEval15Attribute.LEMMA.name().toLowerCase());
 			mPOS=attributes.getValue(SemEval7Attribute.POS.name().toLowerCase());
 			mID = attributes.getValue(SemEval15Attribute.ID.name().toLowerCase());
@@ -44,18 +45,23 @@ public class SemEval15Handler extends SemEval7Handler {
 
 		switch (tag) {
 
+		case CORPUS:
+
+			notifyAnnotations();
+			break;
+			
 		case SENTENCE:
 
-			this.addAnnotation();
-			this.notifyAnnotations();
+			addAnnotation();
 			break;
 			
 		case WF:
-			
-			this.addWord(mWF.trim()+" ");
-			
+							
 			if(mLemma!=null)
-				addInstance(formatInstance(mLemma)+"."+mPOS);
+				addInstance(mWF,formatInstance(mLemma)+"."+mPOS);
+			else
+				addWord(mWF);
+			
 			break;
 			
 		default:

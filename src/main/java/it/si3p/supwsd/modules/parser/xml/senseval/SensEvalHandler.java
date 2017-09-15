@@ -22,11 +22,13 @@ public class SensEvalHandler extends SemEval7Handler {
 	private final Pattern mBPattern= Pattern.compile("'([sm]|re)");
 	private final Pattern mXPattern = Pattern.compile("%");
 	private String mIDSAT,mHead="",mSAT="";
+	private  final Map<String,Lexel>mLexels;
 	
 	public SensEvalHandler() {
 
 		mSATids = new HashMap<String, String>();
 		mSATS = new ArrayList<String>();
+		mLexels = new HashMap<String,Lexel>();
 	}
 
 	@Override
@@ -72,17 +74,23 @@ public class SensEvalHandler extends SemEval7Handler {
 
 		switch (tag) {
 
+		case CORPUS:
+			
+			notifyAnnotations();
+			break;
+			
 		case TEXT:
 
 			mSATS.clear();
 			mSATids.clear();
+			mLexels.clear();
 			addAnnotation();
-			notifyAnnotations();
 			break;
 
 		case HEAD:
 			
 			String instance = "";
+			Lexel lexel;
 			
 			for (String sat : mSATS) 
 				if (mSATids.containsKey(sat))				
@@ -97,9 +105,9 @@ public class SensEvalHandler extends SemEval7Handler {
 				mHead= "percent";
 		
 			instance+=mHead;
-			addInstance(formatInstance(instance));
+			lexel=addInstance(mHead,formatInstance(instance));
+			mLexels.put(mID,lexel);
 			
-			addWord(formatAnnotation(mHead));
 			break;
 
 		case SAT:

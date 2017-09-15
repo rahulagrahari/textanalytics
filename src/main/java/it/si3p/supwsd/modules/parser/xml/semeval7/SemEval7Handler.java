@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -17,17 +18,18 @@ import it.si3p.supwsd.modules.parser.xml.XMLHandler;
  */
 public class SemEval7Handler extends XMLHandler {
 
-	private int mIndex=0;
+	private int mIndex = 0;
 	protected String mID;
-	private String mSentence = "",mLemma,mPOS;
-	protected final Map<String,Lexel>mLexels;
-	private final List<Annotation>mAnnotations;
-	private String mInstance="";
-	
+	private String mLemma, mPOS;
+	protected final Map<Lexel, String> mSentences;
+	private final Map<String, List<Annotation>> mAnnotations;
+	private String mInstance = "";
+	private String mSentence = "";
+
 	public SemEval7Handler() {
 
-		mLexels = new HashMap<String,Lexel>();
-		mAnnotations=new ArrayList<Annotation>();
+		mAnnotations = new HashMap<String, List<Annotation>>();
+		mSentences = new HashMap<Lexel, String>();
 	}
 
 	@Override
@@ -41,10 +43,10 @@ public class SemEval7Handler extends XMLHandler {
 
 		case INSTANCE:
 
-			mInstance="";
+			mInstance = "";
 			mID = attributes.getValue(SemEval7Attribute.ID.name().toLowerCase());
-			mLemma=attributes.getValue(SemEval7Attribute.LEMMA.name().toLowerCase());
-			mPOS=attributes.getValue(SemEval7Attribute.POS.name().toLowerCase());
+			mLemma = attributes.getValue(SemEval7Attribute.LEMMA.name().toLowerCase());
+			mPOS = attributes.getValue(SemEval7Attribute.POS.name().toLowerCase());
 			break;
 
 		default:
@@ -61,20 +63,19 @@ public class SemEval7Handler extends XMLHandler {
 
 		switch (tag) {
 
-		case TEXT:
+		case CORPUS:
 
 			notifyAnnotations();
 			break;
-			
+
 		case SENTENCE:
 
 			addAnnotation();
 			break;
 
 		case INSTANCE:
-			
-			addWord(formatAnnotation(mInstance));
-			addInstance(formatInstance(mLemma)+"."+mPOS);
+
+			addInstance(mInstance, formatInstance(mLemma) + "." + mPOS);
 			break;
 
 		default:
@@ -98,11 +99,11 @@ public class SemEval7Handler extends XMLHandler {
 			break;
 
 		case INSTANCE:
-			
+
 			word = new String(ch, start, length).replaceAll("[\r\n]", " ");
-			mInstance+=word;
+			mInstance += word;
 			break;
-	
+
 		default:
 			break;
 		}
@@ -110,46 +111,78 @@ public class SemEval7Handler extends XMLHandler {
 
 	protected final void addWord(String word) {
 
-		if (!word.isEmpty()) 
-			mSentence += word;		
-	}
-	
-	protected void addInstance(String instance) {
-
-		if (!instance.isEmpty())
-			mLexels.put(mID,new Lexel(mID, instance));	
-	}
-
-
-	protected String formatInstance(String lemma){
+		word=word.trim();
 		
+		if (!word.isEmpty()) {
+
+			for (Entry<Lexel, String> entry : mSentences.entrySet())
+				mSentences.put(entry.getKey(), entry.getValue() + word+" ");
+
+			mSentence += word+" ";
+		}
+	}
+
+	protected Lexel addInstance(String word, String instance) {
+
+		String sentence=mSentence;
+		Lexel lexel = null;
+		
+		addWord(word);	
+		
+		if (!instance.isEmpty()) {	
+			lexel=new Lexel(mID, instance);
+			mSentences.put(lexel, sentence + formatAnnotation(word)+" ");
+		}
+		
+		return lexel;
+	}
+
+	protected String formatInstance(String lemma) {
+
 		return lemma.trim().replaceAll("[\\s\\-]", "_").toLowerCase();
 	}
-	
+
 	protected final void notifyAnnotations() throws SAXException {
-		
+
 		try {
-			mAnnotationListener.notifyAnnotations(mAnnotations);
+
+			for (List<Annotation> annotations : mAnnotations.values())
+				mAnnotationListener.notifyAnnotations(annotations);
 		} catch (Exception e) {
 			throw new SAXException(e);
 		}
-		
+
 		mAnnotations.clear();
 	}
 
 	protected final void addAnnotation() {
 
+		List<Annotation> annotations;
 		Annotation annotation;
+		String name, sentence;
+		Lexel lexel;
 
-		annotation=new Annotation(mIndex,mSentence.trim());
-		
-		for(Lexel lexel:mLexels.values())
+		for (Entry<Lexel, String> entry : mSentences.entrySet()) {
+
+			sentence = entry.getValue().trim();
+			lexel = entry.getKey();			
+			name = lexel.toString();
+			annotations = mAnnotations.get(name);
+
+			if (annotations == null) {
+
+				annotations = new ArrayList<Annotation>();
+				mAnnotations.put(name, annotations);
+			}
+
+			annotation = new Annotation(mIndex, sentence);
 			annotation.addLexel(lexel);
-		
-		mAnnotations.add(annotation);
-		mLexels.clear();
+			annotations.add(annotation);
+			mIndex++;
+		}
+
+		mSentences.clear();
 		mSentence = "";
-		mIndex++;
 	}
 
 }

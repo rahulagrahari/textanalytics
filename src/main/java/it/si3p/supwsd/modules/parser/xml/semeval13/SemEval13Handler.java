@@ -17,7 +17,7 @@ public class SemEval13Handler extends SemEval7Handler {
 	public void startElement(String uri, String localName, String name, Attributes attributes) {
 
 		SemEval13Tag tag;
-
+		
 		tag = SemEval13Tag.valueOf(name.toUpperCase());
 
 		switch (tag) {
@@ -48,7 +48,7 @@ public class SemEval13Handler extends SemEval7Handler {
 
 		switch (tag) {
 
-		case TEXT:
+		case CORPUS:
 
 			notifyAnnotations();
 			break;
@@ -60,16 +60,12 @@ public class SemEval13Handler extends SemEval7Handler {
 
 		case INSTANCE:
 			
-			if(mPOS==null)
-				mPOS="n";
-			
-			addWord(formatAnnotation(mInstance));
-			addInstance(formatInstance(mLemma)+"."+mPOS);
+			addInstance(mInstance,formatInstance(mLemma)+"."+mPOS);
 			break;
 			
 		case WF:
 			
-			this.addWord(mWF.trim()+" ");
+			addWord(mWF);
 			break;
 			
 		default:
