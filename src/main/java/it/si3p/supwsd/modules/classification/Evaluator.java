@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import it.si3p.supwsd.data.POSMap.TAG;
+import it.si3p.supwsd.data.POSMap;
 import it.si3p.supwsd.inventory.SenseInventory;
 import it.si3p.supwsd.modules.classification.classifiers.Classifier;
 import it.si3p.supwsd.modules.classification.instances.AmbiguityTest;
@@ -22,12 +21,14 @@ public class Evaluator {
 	private final SenseInventory mSenseInventory;
 	private final Classifier<?, ?> mClassifier;
 	private final Score mScore;
-
+	private final POSMap mPOSMap;
+	
 	public Evaluator(Classifier<?, ?> classifier, SenseInventory resource, int total) {
 
 		this.mClassifier = classifier;
 		this.mSenseInventory = resource;
 		this.mScore = new Score(total);
+		this.mPOSMap=POSMap.getInstance();
 	}
 
 	public Collection<Result> evaluate(AmbiguityTest ambiguity) throws ClassNotFoundException, IOException {
@@ -45,7 +46,7 @@ public class Evaluator {
 			if (mSenseInventory != null) {
 
 				index = lexel.lastIndexOf(".");
-				sense = mSenseInventory.getSense(lexel.substring(0, index), TAG.valueOf(lexel.substring(index + 1)));
+				sense = mSenseInventory.getSense(lexel.substring(0, index),mPOSMap.getPOS(lexel.substring(index + 1)));
 			}
 
 			if (sense == null)
