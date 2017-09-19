@@ -44,13 +44,8 @@ public abstract class XMLHandler extends DefaultHandler {
 	}
 	
 	protected String formatAnnotation(String text){
-		
-		String ann=text.trim().replaceAll("[^A-Za-z0-9]+", "_");
-
-		if(ann.length()>1)
-			ann=ann.replaceAll("_$|^_", "");	
-	
-		return " "+Annotation.ANNOTATION_TAG+ann+Annotation.ANNOTATION_TAG+" ";
+				
+		return Annotation.ANNOTATION_TAG+text.trim()+Annotation.ANNOTATION_TAG;
 	}
 	
 }

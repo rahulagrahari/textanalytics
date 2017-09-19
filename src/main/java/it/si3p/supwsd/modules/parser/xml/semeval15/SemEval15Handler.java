@@ -12,7 +12,7 @@ import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7Handler;
  */
 public class SemEval15Handler extends SemEval7Handler {
 	
-	private String mWF,mLemma,mPOS;
+	private String mWF;
 	
 	@Override
 	public void startElement(String uri, String localName, String name, Attributes attributes) {
@@ -28,8 +28,14 @@ public class SemEval15Handler extends SemEval7Handler {
 			mWF="";
 			mLemma=attributes.getValue(SemEval15Attribute.LEMMA.name().toLowerCase());
 			mPOS=attributes.getValue(SemEval7Attribute.POS.name().toLowerCase());
-			mID = attributes.getValue(SemEval15Attribute.ID.name().toLowerCase());
+			mInstanceID = attributes.getValue(SemEval15Attribute.ID.name().toLowerCase());
 			break;
+		
+		case SENTENCE:
+
+			mSentence = "";
+			mSentenceID= attributes.getValue(SemEval7Attribute.ID.name().toLowerCase());
+			break;	
 			
 		default:
 			break;
@@ -57,10 +63,10 @@ public class SemEval15Handler extends SemEval7Handler {
 			
 		case WF:
 							
+			addWord(mWF);
+			
 			if(mLemma!=null)
-				addInstance(mWF,formatInstance(mLemma)+"."+mPOS);
-			else
-				addWord(mWF);
+				addInstance(formatInstance(mLemma)+"."+mPOS);
 			
 			break;
 			

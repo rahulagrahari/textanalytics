@@ -40,7 +40,7 @@ public class Evaluator {
 
 		lexel = ambiguity.getLexel();
 		classes = ambiguity.getClasses();
-
+		
 		if (classes == null) {
 
 			if (mSenseInventory != null) {

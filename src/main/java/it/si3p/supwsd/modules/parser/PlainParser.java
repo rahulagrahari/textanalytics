@@ -3,8 +3,7 @@ package it.si3p.supwsd.modules.parser;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import it.si3p.supwsd.data.Annotation;
 
 /**
@@ -17,7 +16,6 @@ public class PlainParser extends Parser {
 	@Override
 	public void parse(String file) throws Exception {
 
-		List<Annotation> annotations;
 		Annotation annotation;
 		String line;
 		int id=0;
@@ -26,10 +24,8 @@ public class PlainParser extends Parser {
 				
 			while ((line = reader.readLine()) != null) {
 
-				annotations = new ArrayList<Annotation>();
-				annotation = new Annotation(id++,line.trim());
-				annotations.add(annotation);
-				this.mParserListener.annotationsReady(annotations);
+				annotation = new Annotation(String.valueOf(id++),line.trim());
+				this.mParserListener.annotationsReady(Arrays.asList(annotation),null);
 			}
 
 		}

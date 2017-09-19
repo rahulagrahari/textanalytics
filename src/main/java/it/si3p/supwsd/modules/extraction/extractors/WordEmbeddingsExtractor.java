@@ -50,26 +50,28 @@ public class WordEmbeddingsExtractor extends FeatureExtractor {
 		Token[] tokens;
 		String word;
 		double value, wordEmbedding[];
-		int tokenID, min = 0, max;
-
-		tokenID = lexel.getTokenIndex();
+		int id, min = 0, max,offset;
+			
+		id = lexel.getTokenIndex();
+		offset=lexel.getOffset();
 		tokens = annotation.getTokens(lexel);
 		max = tokens.length - 1;
 
 		if (mWindowSize > -1) {
 
-			min = Math.max(min, tokenID - this.mWindowSize);
-			max = Math.min(max, tokenID + this.mWindowSize);
+			min = Math.max(min,id - this.mWindowSize);
+			max = Math.min(max, id + this.mWindowSize);
 		}
 
+		max-=offset;
 		features = new Vector<Feature>();
 		wordEmbeddings = new HashMap<Integer, double[]>();
 
 		for (int k = min; k <= max; k++) {
-
-			word = tokens[k].getWord().toLowerCase();
+	
+			word = tokens[k>id?k+offset:k].getWord().toLowerCase();
 			wordEmbedding = this.mWEMemoryManagment.get(word);
-			wordEmbeddings.put(k - tokenID, wordEmbedding);
+			wordEmbeddings.put(k - id, wordEmbedding);
 		}
 
 		for (int i = 0; i < this.mWEMemoryManagment.getMemSize(); i++) {

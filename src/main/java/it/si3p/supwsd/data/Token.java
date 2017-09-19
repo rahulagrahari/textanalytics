@@ -15,7 +15,7 @@ public class Token{
 
 		this.mWord = word;
 		this.mPOS = pos;
-		this.mLemma = lemma!=null?lemma.toLowerCase():lemma;
+		this.mLemma = lemma==null?null:lemma.toLowerCase();
 		
 	}
 	

@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import it.si3p.supwsd.data.Lexel;
-import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7Handler;
+import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7HandlerFast;
 
 /**
  * @author papandrea
  *
  */
-public class SensEvalHandler extends SemEval7Handler {
+public class SensEvalHandlerFast extends SemEval7HandlerFast {
 
 	private final Map<String, String> mSATids;
 	private final List<String> mSATS;
@@ -24,7 +24,7 @@ public class SensEvalHandler extends SemEval7Handler {
 	private String mIDSAT,mHead="",mSAT="";
 	private  final Map<String,Lexel>mLexels;
 	
-	public SensEvalHandler() {
+	public SensEvalHandlerFast() {
 
 		mSATids = new HashMap<String, String>();
 		mSATS = new ArrayList<String>();
@@ -45,7 +45,7 @@ public class SensEvalHandler extends SemEval7Handler {
 			String sats;
 			
 			mHead="";
-			mInstanceID = attributes.getValue(SensEvalAttribute.ID.name().toLowerCase());			
+			mInstanceID  = attributes.getValue(SensEvalAttribute.ID.name().toLowerCase());			
 			mSATS.clear();
 			sats = attributes.getValue(SensEvalAttribute.SATS.name().toLowerCase());
 
@@ -74,17 +74,13 @@ public class SensEvalHandler extends SemEval7Handler {
 
 		switch (tag) {
 
-		case CORPUS:
-			
-			notifyAnnotations();
-			break;
-			
 		case TEXT:
 
 			mSATS.clear();
 			mSATids.clear();
 			mLexels.clear();
-			addAnnotation();			
+			addAnnotation();
+			notifyAnnotations();
 			break;
 
 		case HEAD:
@@ -107,7 +103,8 @@ public class SensEvalHandler extends SemEval7Handler {
 			instance+=mHead;		
 			addWord(formatAnnotation(mHead));
 			lexel=addInstance(formatInstance(instance));			
-			mLexels.put(mInstanceID,lexel);			
+			mLexels.put(mInstanceID,lexel);		
+			
 			break;
 
 		case SAT:
@@ -153,7 +150,7 @@ public class SensEvalHandler extends SemEval7Handler {
 			break;
 		}
 	}
-
+	
 	protected final void addSAT(String word) {
 
 		Lexel lexel = mLexels.get(mInstanceID);

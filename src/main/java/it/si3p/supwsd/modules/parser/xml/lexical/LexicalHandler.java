@@ -14,8 +14,7 @@ import it.si3p.supwsd.modules.parser.xml.XMLHandler;
  */
 public class LexicalHandler extends XMLHandler {
 	
-	private String mSentence, mID,mName;
-	private int mIndex=0;
+	private String mLexelID,mSentence, mInstanceID,mName;
 	private List<Annotation>mAnnotations;
 	private String mHead="";
 	
@@ -30,12 +29,13 @@ public class LexicalHandler extends XMLHandler {
 			
 			mAnnotations=new  ArrayList<Annotation>();
 			mName=attributes.getValue(LexicalAttribute.ITEM.name().toLowerCase());
+			mLexelID=attributes.getValue(LexicalAttribute.ID.name().toLowerCase());
 			break;
 			
 		case INSTANCE:
 
 			mSentence="";
-			mID=attributes.getValue(LexicalAttribute.ID.name().toLowerCase());			
+			mInstanceID=attributes.getValue(LexicalAttribute.ID.name().toLowerCase());			
 			break;
 
 		case HEAD:
@@ -67,12 +67,11 @@ public class LexicalHandler extends XMLHandler {
 			Annotation annotation;
 			
 			if(mHead.isEmpty())
-				throw new  SAXException("Missed tag <HEAD> in sentence "+mID);
+				throw new  SAXException("Missed tag <HEAD> in sentence "+mInstanceID);
 			
-			annotation=new Annotation(mIndex,mSentence.trim());
-			annotation.addLexel(new Lexel(mID,mName));
+			annotation=new Annotation(mInstanceID,mSentence.trim());
+			annotation.addLexel(new Lexel(mLexelID,mName));
 			mAnnotations.add(annotation);
-			mIndex++;
 			break;
 			
 		case HEAD:

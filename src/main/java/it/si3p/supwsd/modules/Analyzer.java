@@ -24,7 +24,6 @@ import it.si3p.supwsd.modules.parser.Parser;
 import it.si3p.supwsd.modules.parser.Parser.ParserListener;
 import it.si3p.supwsd.modules.preprocessing.Preprocessor;
 
-
 /**
  * @author papandrea
  *
@@ -47,7 +46,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 		this.mSenses = senses;
 	}
 
-	public final void execute(String annotationsFile) throws Exception  {
+	public final void execute(String annotationsFile) throws Exception {
 
 		try {
 
@@ -74,7 +73,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 	}
 
 	@Override
-	public void annotationsReady(List<Annotation> annotations) throws Exception  {
+	public void annotationsReady(List<Annotation> annotations, String instance) throws Exception {
 
 		CompletionService<SentenceThread> service;
 		ExecutorService executor;
@@ -105,7 +104,9 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 
 				for (int j = 0; j < slots; j++) {
 
-					thread = new SentenceThread(annotations.get(j + count));
+					annotation = annotations.get(j + count);
+					thread = instance == null ? new SentenceThread(annotation)
+							: new SentenceThreadInstance(annotation, instance);
 					service.submit(thread);
 				}
 
@@ -118,16 +119,16 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 					thread = service.take().get();
 					annotation = thread.mAnnotation;
 
-					for (Lexel lexel : annotation) {
+					for (Lexel lexel : thread.mFeatures.keySet()) {
 
 						token = annotation.getToken(lexel);
 						names = getModelName(lexel, token);
 						id = lexel.getID();
 						senses = getSenses(id);
 
-						// if (senses != null) {// throw new Exception("No sense
-						// for
-						// instance id "+id);
+						// if (senses == null)
+							// throw new Exception("No sense for instance id "+id);
+						
 						for (String name : names) {
 
 							if (ambiguities.containsKey(name))
@@ -141,8 +142,6 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 							ambiguity.add(id, token, thread.mFeatures.get(lexel), senses);
 						}
 					}
-
-					annotation.dispose();
 				}
 
 			} while (threads > 0);
@@ -152,7 +151,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 		} finally {
 
 			executor.shutdownNow();
-			
+
 			try {
 				executor.awaitTermination(5, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
@@ -179,7 +178,7 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 	private class SentenceThread implements Callable<SentenceThread> {
 
 		private final Annotation mAnnotation;
-		private Map<Lexel, Vector<Feature>> mFeatures;
+		private final Map<Lexel, Vector<Feature>> mFeatures;
 
 		SentenceThread(Annotation annotation) {
 
@@ -190,17 +189,40 @@ public abstract class Analyzer<T extends Ambiguity> implements ParserListener {
 		@Override
 		public SentenceThread call() {
 
-			Vector<Feature> features;
+			if (!mAnnotation.isAnnotated())
+				mPreprocessor.execute(mAnnotation);
 
-			mPreprocessor.execute(mAnnotation);
-
-			for (Lexel lexel : mAnnotation) {
-
-				features = mExtractor.extract(lexel, mAnnotation);
-				mFeatures.put(lexel, features);
-			}
+			for (Lexel lexel : mAnnotation)
+				extract(lexel);
 
 			return this;
+		}
+
+		protected void extract(Lexel lexel) {
+
+			Vector<Feature> features;
+
+			features = mExtractor.extract(lexel, mAnnotation);
+			mFeatures.put(lexel, features);
+		}
+	}
+
+	private class SentenceThreadInstance extends SentenceThread {
+
+		private final String mInstance;
+
+		SentenceThreadInstance(Annotation annotation, String instance) {
+
+			super(annotation);
+			this.mInstance = instance;
+		}
+
+		@Override
+		protected void extract(Lexel lexel) {
+
+			if (lexel.toString().equals(mInstance)) {
+				super.extract(lexel);
+			}
 		}
 	}
 

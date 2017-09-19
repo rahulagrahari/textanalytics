@@ -1,45 +1,42 @@
-package it.si3p.supwsd.modules.parser.xml.semeval13;
+package it.si3p.supwsd.modules.parser.xml.semeval15;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
 import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7Attribute;
-import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7Handler;
+import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7HandlerFast;
 
 /**
  * @author papandrea
  *
  */
-public class SemEval13Handler extends SemEval7Handler {
+public class SemEval15HandlerFast extends SemEval7HandlerFast {
 	
 	private String mWF;
 	
 	@Override
 	public void startElement(String uri, String localName, String name, Attributes attributes) {
 
-		SemEval13Tag tag;
-		
-		tag = SemEval13Tag.valueOf(name.toUpperCase());
+		SemEval15Tag tag;
+
+		tag = SemEval15Tag.valueOf(name.toUpperCase());
 
 		switch (tag) {
 
-		case INSTANCE:
+		case WF:
 
-			mInstance="";
-			mInstanceID= attributes.getValue(SemEval13Attribute.ID.name().toLowerCase());
-			mLemma=attributes.getValue(SemEval7Attribute.LEMMA.name().toLowerCase());
+			mLemma=attributes.getValue(SemEval15Attribute.LEMMA.name().toLowerCase());
 			mPOS=attributes.getValue(SemEval7Attribute.POS.name().toLowerCase());
+			mInstanceID = attributes.getValue(SemEval15Attribute.ID.name().toLowerCase());
+			mWF="";
 			break;
-
+		
 		case SENTENCE:
 
 			mSentence = "";
 			mSentenceID= attributes.getValue(SemEval7Attribute.ID.name().toLowerCase());
 			break;
 			
-			
-		case WF:
-			mWF="";
-			break;
 			
 		default:
 			break;
@@ -51,29 +48,26 @@ public class SemEval13Handler extends SemEval7Handler {
 	@Override
 	public void endElement(String uri, String localName, String name) throws SAXException {
 
-		SemEval13Tag tag = SemEval13Tag.valueOf(name.toUpperCase());
+		SemEval15Tag tag = SemEval15Tag.valueOf(name.toUpperCase());
 
 		switch (tag) {
 
-		case CORPUS:
+		case TEXT:
 
 			notifyAnnotations();
 			break;
 			
 		case SENTENCE:
 
-			addAnnotation();
-			break;
-
-		case INSTANCE:
-			
-			addWord(formatAnnotation(mInstance));
-			addInstance(formatInstance(mLemma)+"."+mPOS);
+			this.addAnnotation();
 			break;
 			
 		case WF:
 			
-			addWord(mWF);
+			this.addWord(mWF);
+			
+			if(mLemma!=null)
+				addInstance(formatInstance(mLemma)+"."+mPOS);
 			break;
 			
 		default:
@@ -86,18 +80,13 @@ public class SemEval13Handler extends SemEval7Handler {
 	@Override
 	public void characters(char ch[], int start, int length) {
 		
-		switch ((SemEval13Tag)this.get()) {
+		switch ((SemEval15Tag)this.get()) {
 
 		case WF:
 
 			mWF+= new String(ch, start, length).replaceAll("[\r\n]", " ");
 			break;
 
-		case INSTANCE:
-			
-			mInstance+=new String(ch, start, length).replaceAll("[\r\n]", " ");
-			break;
-			
 		default:
 			break;
 		}

@@ -26,24 +26,23 @@ public class LocalCollocationsExtractor extends FeatureExtractor {
 	private static final String[] DEFAULT_COLLOCATIONS = new String[] { "-2,-2", "-1,-1", "1,1", "2,2", "-2,-1", "-1,1",
 			"1,2", "-3,-1", "-2,1", "-1,2", "1,3" };
 
-	public LocalCollocationsExtractor(int cutoff,String collocationsFile) throws IOException{
+	public LocalCollocationsExtractor(int cutoff, String collocationsFile) throws IOException {
 
 		super(cutoff);
-		
-		if(collocationsFile==null)
-			mLocalCollocations=DEFAULT_COLLOCATIONS;
+
+		if (collocationsFile == null)
+			mLocalCollocations = DEFAULT_COLLOCATIONS;
 		else
-			mLocalCollocations=readCollocations(collocationsFile);
-		
+			mLocalCollocations = readCollocations(collocationsFile);
+
 	}
 
-	public LocalCollocationsExtractor(int cutoff,String[] collocations) {
+	public LocalCollocationsExtractor(int cutoff, String[] collocations) {
 
 		super(cutoff);
-		
+
 		this.mLocalCollocations = collocations;
 	}
-
 
 	@Override
 	public Collection<Feature> extract(Lexel lexel, Annotation annotation) {
@@ -52,10 +51,11 @@ public class LocalCollocationsExtractor extends FeatureExtractor {
 		Token[] tokens;
 		String name, token, indexes[];
 		int i, j, start, end;
-		int id, length;
-		
+		int id, length, offset, index;
+
 		tokens = annotation.getTokens(lexel);
 		id = lexel.getTokenIndex();
+		offset = lexel.getOffset();
 		features = new Vector<Feature>();
 		length = tokens.length;
 
@@ -70,20 +70,21 @@ public class LocalCollocationsExtractor extends FeatureExtractor {
 				name = "";
 				start = id + i;
 				end = id + j;
-				
+
 				for (int k = start; k <= end; k++) {
-					
+
 					if (k != id) {
 
-						if (k > -1 && k < length)
-							token = tokens[k].getWord().toLowerCase();
+						index = k > id ? k + offset : k;
+
+						if (index > -1 && index < length)
+							token = tokens[index].getWord().toLowerCase();
 						else
 							token = DEFAULT;
 
 						name += " " + token;
 					}
 				}
-				
 				features.add(new LocalCollocation(i, j, name.trim()));
 
 			} else
@@ -93,22 +94,20 @@ public class LocalCollocationsExtractor extends FeatureExtractor {
 		return features;
 	}
 
-
 	@Override
 	public Class<? extends Feature> getFeatureClass() {
-		
+
 		return LocalCollocation.class;
 	}
-	
-	
+
 	private static String[] readCollocations(String collocationsFile) throws IOException {
 
 		List<String> collocations;
 		String line;
-		
+
 		collocations = new ArrayList<String>();
 
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(collocationsFile)))){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(collocationsFile)))) {
 
 			while ((line = reader.readLine()) != null)
 				collocations.add(line);

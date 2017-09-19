@@ -1,11 +1,7 @@
 package it.si3p.supwsd.modules.parser.xml.semeval7;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import it.si3p.supwsd.data.Annotation;
@@ -16,17 +12,17 @@ import it.si3p.supwsd.modules.parser.xml.XMLHandler;
  * @author papandrea
  *
  */
-public class SemEval7Handler extends XMLHandler {
+public class SemEval7HandlerFast extends XMLHandler {
 
-	protected String mSentenceID,mInstanceID,mSentence;
+	protected String mInstanceID, mSentenceID,mSentence;
+	private final List<Annotation>mAnnotations;
+	protected String mInstance="",mLemma,mPOS;
 	protected final List<Lexel>mLexels;
-	protected final Map<String,HashSet<Annotation>>mAnnotations;
-	protected String mInstance,mLemma,mPOS;
 	
-	public SemEval7Handler() {
+	public SemEval7HandlerFast() {
 
 		mLexels = new ArrayList<Lexel>();
-		mAnnotations=new HashMap<String,HashSet<Annotation>>();
+		mAnnotations=new ArrayList<Annotation>();
 	}
 
 	@Override
@@ -66,7 +62,7 @@ public class SemEval7Handler extends XMLHandler {
 
 		switch (tag) {
 
-		case CORPUS:
+		case TEXT:
 
 			notifyAnnotations();
 			break;
@@ -121,7 +117,7 @@ public class SemEval7Handler extends XMLHandler {
 			mSentence += word+" ";		
 	}
 	
-	protected Lexel addInstance(String instance) {
+	protected final Lexel addInstance(String instance) {
 
 		Lexel lexel;
 		
@@ -131,18 +127,15 @@ public class SemEval7Handler extends XMLHandler {
 		return lexel;
 	}
 
-	protected String formatInstance(String lemma){
+	protected final String formatInstance(String lemma){
 		
 		return lemma.trim().replaceAll("[\\s\\-]", "_").toLowerCase();
 	}
 	
-	protected final void notifyAnnotations() throws SAXException {
+	protected void notifyAnnotations() throws SAXException {
 		
 		try {
-			
-			for(Entry<String, HashSet<Annotation>> entry:mAnnotations.entrySet())
-			mAnnotationListener.notifyAnnotations(new ArrayList<Annotation>(entry.getValue()),entry.getKey());
-		
+			mAnnotationListener.notifyAnnotations(mAnnotations);
 		} catch (Exception e) {
 			throw new SAXException(e);
 		}
@@ -150,28 +143,13 @@ public class SemEval7Handler extends XMLHandler {
 		mAnnotations.clear();
 	}
 
-	protected final void addAnnotation() {
+	protected void addAnnotation() {
 
 		Annotation annotation;
-		HashSet<Annotation>annotations;
-		String name;
-		
-		annotation=new Annotation(mSentenceID,mSentence.trim());
-		annotation.addLexels(mLexels);		
 
-		for(Lexel lexel:mLexels) {
-		
-			name=lexel.toString();
-			annotations=mAnnotations.get(name);
-			
-			if(annotations==null) {
-				annotations=new HashSet<Annotation>();
-				mAnnotations.put(name, annotations);
-			}
-		
-			annotations.add(annotation);
-		}
-		
-		mLexels.clear();
+		annotation=new Annotation(mSentenceID,mSentence.trim());		
+		annotation.addLexels(mLexels);		
+		mAnnotations.add(annotation);
+		mLexels.clear();	
 	}
 }

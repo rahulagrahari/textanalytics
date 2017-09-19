@@ -3,6 +3,7 @@ package it.si3p.supwsd.modules.parser;
 import java.util.List;
 import it.si3p.supwsd.data.Annotation;
 
+
 /**
  * @author papandrea
  *
@@ -22,7 +23,7 @@ public abstract class Parser  {
 
 	public interface ParserListener {
 
-		public void annotationsReady(List<Annotation> annotations) throws Exception ;
+		public void annotationsReady(List<Annotation> annotations,String instance) throws Exception ;
 	}
 
 

@@ -1,8 +1,10 @@
 package it.si3p.supwsd.modules.parser;
 
+
 import java.util.List;
 import org.xml.sax.SAXException;
 import it.si3p.supwsd.data.Annotation;
+
 
 /**
  * @author papandrea
@@ -11,4 +13,5 @@ import it.si3p.supwsd.data.Annotation;
 public interface AnnotationListener {
 
 	void notifyAnnotations(List<Annotation> annotations) throws SAXException ;
+	void notifyAnnotations(List<Annotation> annotations,String instance) throws SAXException ;
 }

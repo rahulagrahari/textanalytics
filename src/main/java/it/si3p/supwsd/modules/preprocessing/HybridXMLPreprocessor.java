@@ -56,6 +56,7 @@ public class HybridXMLPreprocessor extends HybridPreprocessor {
 		List<String> sentence;
 		String word, head = "";
 		String[] temp;
+		Lexel lexel = null;
 		final int index,length;
 		final String tag = Annotation.ANNOTATION_TAG;
 		boolean start = false;
@@ -77,11 +78,14 @@ public class HybridXMLPreprocessor extends HybridPreprocessor {
 
 					head = "";
 					start = true;
-					iterator.next().set(i, sentence.size());
+					lexel = iterator.next();
+					lexel.setIndexes(i, sentence.size());
 					word = word.substring(index);
 				}
 
 				if (word.endsWith(tag)) {
+					
+					lexel.setOffset(i-lexel.getTokenIndex()-1);
 					start = false;
 					word = head + word.substring(0, word.length() - index);
 				}

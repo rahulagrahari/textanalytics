@@ -1,6 +1,6 @@
 package it.si3p.supwsd.modules.preprocessing;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,13 +27,13 @@ import it.si3p.supwsd.modules.preprocessing.units.dependencyParser.dependencyTre
  */
 public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 
-	private final ConcurrentHashMap<Integer, HashSet<Integer>> mIndex;
+	private final ConcurrentHashMap<String, List<Integer>> mIndex;
 
 	public StanfordXMLPreprocessor(boolean split, boolean pos, boolean lemma, boolean depparse) {
 
 		super(split, pos, lemma, depparse, true);
 
-		mIndex = new ConcurrentHashMap<Integer, HashSet<Integer>>();
+		mIndex = new ConcurrentHashMap<String, List<Integer>>();
 	}
 
 	@Override
@@ -41,18 +41,18 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 
 		Pattern pattern;
 		Matcher matcher;
-		int count = 0;
-		HashSet<Integer> indexes;
+		int count = 0, length;
+		List<Integer> indexes;
 
 		pattern = Pattern.compile(Pattern.quote(Annotation.ANNOTATION_TAG));
 		matcher = pattern.matcher(annotation.getText());
-		indexes = new HashSet<Integer>();
+		indexes = new ArrayList<Integer>();
+		length = Annotation.ANNOTATION_TAG.length();
 
 		while (matcher.find()) {
 
 			indexes.add(matcher.start() - count);
-			count += Annotation.ANNOTATION_TAG.length() * 2;
-			matcher.find();
+			count += length;
 		}
 
 		mIndex.put(annotation.getID(), indexes);
@@ -70,8 +70,10 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		String tokens[][], tags[][], lemmas[][], words[];
 		DependencyTree[] dtree;
 		Iterator<Lexel> lexels;
-		HashSet<Integer> indexes;
-		int id, size, length;
+		List<Integer> indexes;
+		Lexel lexel = null;
+		String id;
+		int size, length, position;
 
 		size = sentences.size();
 		tokens = new String[size][];
@@ -81,7 +83,7 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 		lexels = annotation.iterator();
 		id = annotation.getID();
 		indexes = mIndex.get(id);
-		
+
 		for (int i = 0; i < size; i++) {
 
 			sentence = sentences.get(i);
@@ -97,10 +99,25 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 				words[j] = label.get(TextAnnotation.class);
 				tags[i][j] = label.get(PartOfSpeechAnnotation.class);
 				lemmas[i][j] = label.get(LemmaAnnotation.class);
+				position = label.beginPosition();
 
-				if (indexes.contains(label.beginPosition()))
-					lexels.next().set(i, j);
+				if (!indexes.isEmpty() && position > indexes.get(0)) {
+										
+					lexel.setOffset(j - lexel.getTokenIndex() - 1);
+					lexel = null;
+					indexes.remove(0);
+				}
+
+				if (!indexes.isEmpty() && position == indexes.get(0)) {
+										
+					lexel = lexels.next();
+					lexel.setIndexes(i, j);
+					indexes.remove(0);
+				}
 			}
+
+			if (lexel != null)
+				lexel.setOffset(length - lexel.getTokenIndex() - 1);
 
 			tokens[i] = words;
 			graph = sentence.get(BasicDependenciesAnnotation.class);
@@ -108,7 +125,7 @@ public class StanfordXMLPreprocessor extends StanfordPreprocessor {
 			if (graph != null)
 				dtree[i] = getDependencyTree(graph);
 		}
-				
+
 		annotation.annote(tokens, mPOS ? tags : null, mLemma ? lemmas : null, mDepParse ? dtree : null);
 		mIndex.remove(id);
 	}

@@ -17,9 +17,9 @@ class CompoundProcessor  {
 	private static final String FORMAT="s%012d.t%012d";
 	private static final int mNgram=5;
 	private static final POSMap mPOSMap=POSMap.getInstance();
-	private final int mID;
+	private final String mID;
 	
-	CompoundProcessor(int id){
+	CompoundProcessor(String id){
 		
 		this.mID=id;
 	}
@@ -69,7 +69,7 @@ class CompoundProcessor  {
 				}
 				
 				lexel=new Lexel(String.format(FORMAT,mID, ++id), lemma);
-				lexel.set(i, lc.size());
+				lexel.setIndexes(i, lc.size());
 				lexels.add(lexel);
 				lc.add(lemma);
 				pc.add(pos);

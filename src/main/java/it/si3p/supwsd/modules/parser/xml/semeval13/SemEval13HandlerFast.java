@@ -3,13 +3,13 @@ package it.si3p.supwsd.modules.parser.xml.semeval13;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7Attribute;
-import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7Handler;
+import it.si3p.supwsd.modules.parser.xml.semeval7.SemEval7HandlerFast;
 
 /**
  * @author papandrea
  *
  */
-public class SemEval13Handler extends SemEval7Handler {
+public class SemEval13HandlerFast extends SemEval7HandlerFast {
 	
 	private String mWF;
 	
@@ -17,7 +17,7 @@ public class SemEval13Handler extends SemEval7Handler {
 	public void startElement(String uri, String localName, String name, Attributes attributes) {
 
 		SemEval13Tag tag;
-		
+
 		tag = SemEval13Tag.valueOf(name.toUpperCase());
 
 		switch (tag) {
@@ -35,7 +35,6 @@ public class SemEval13Handler extends SemEval7Handler {
 			mSentence = "";
 			mSentenceID= attributes.getValue(SemEval7Attribute.ID.name().toLowerCase());
 			break;
-			
 			
 		case WF:
 			mWF="";
@@ -55,7 +54,7 @@ public class SemEval13Handler extends SemEval7Handler {
 
 		switch (tag) {
 
-		case CORPUS:
+		case TEXT:
 
 			notifyAnnotations();
 			break;

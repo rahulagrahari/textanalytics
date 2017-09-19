@@ -12,6 +12,7 @@ public class Lexel implements Comparable<Lexel> {
 	private String mName;
 	private int mSentenceIndex = -1;
 	private int mTokenIndex = -1;
+	private int mOffset = -1;
 	
 	public Lexel(String id,String name){
 		
@@ -45,10 +46,20 @@ public class Lexel implements Comparable<Lexel> {
 		return this.mTokenIndex;
 	}
 
-	public void set(int sentenceIndex,int tokenIndex){
+	public int getOffset(){
+		
+		return this.mOffset;
+	}
+	
+	public void setIndexes(int sentenceIndex,int tokenIndex){
 		
 		this.mSentenceIndex=sentenceIndex;
 		this.mTokenIndex=tokenIndex;
+	}
+	
+	public void setOffset(int offset){
+		
+		this.mOffset=offset;
 	}
 	
 	@Override
@@ -61,11 +72,9 @@ public class Lexel implements Comparable<Lexel> {
 	}
 
 	@Override
-	public int hashCode(){
-		
+	public int hashCode(){		
 		return Objects.hash(this.getID());
 	}
-
 	
 	@Override
 	public int compareTo(Lexel arg0) {

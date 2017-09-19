@@ -35,14 +35,24 @@ public class XMLParser extends Parser implements AnnotationListener {
 	}
 
 	@Override
-	public void notifyAnnotations(List<Annotation> mAnnotations) throws SAXException  {
+	public void notifyAnnotations(List<Annotation> annotations) throws SAXException  {
 
 		try {
-			this.mParserListener.annotationsReady(mAnnotations);
+			notifyAnnotations(annotations,null) ;
 		
 		} catch (Exception e) {
 			throw new SAXException(e);
 		}
 	}
 
+	@Override
+	public void notifyAnnotations(List<Annotation> annotations,String instance) throws SAXException  {
+
+		try {
+			this.mParserListener.annotationsReady(annotations,instance);
+		
+		} catch (Exception e) {
+			throw new SAXException(e);
+		}
+	}
 }

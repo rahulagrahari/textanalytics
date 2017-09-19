@@ -67,7 +67,7 @@ public class SupWSD {
 		Serializer.setDirectory(config.getWorkingDir());
 		//Writer.setDirectory(config.getWorkingDir());
 		parserType = config.getParserType();
-		parser = ParserFactory.getInstance().getParser(parserType);
+		parser = ParserFactory.getInstance().getParser(parserType,false);
 		classifier = ClassifierFactory.getInstance().getClassifier(config.getClassifierType());
 		preprocessor = getPreprocessor(config.getSplitterType(), config.getTokenizerType(), config.getTaggerType(),
 				config.getLemmatizerType(), config.getDParserType(), config.getSplitterModel(),
@@ -98,7 +98,7 @@ public class SupWSD {
 		Serializer.setDirectory(config.getWorkingDir());
 		Writer.setDirectory(config.getWorkingDir());
 		parserType = config.getParserType();
-		parser = ParserFactory.getInstance().getParser(parserType);
+		parser = ParserFactory.getInstance().getParser(parserType,true);
 		mns = MNSFactory.getInstance().getMNS(config.getParserType(), config.getMNS());
 		preprocessor = getPreprocessor(config.getSplitterType(), config.getTokenizerType(), config.getTaggerType(),
 				config.getLemmatizerType(), config.getDParserType(), config.getSplitterModel(),

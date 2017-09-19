@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-
 import it.si3p.supwsd.modules.preprocessing.units.dependencyParser.dependencyTree.DependencyTree;
 
 /**
@@ -17,13 +16,13 @@ import it.si3p.supwsd.modules.preprocessing.units.dependencyParser.dependencyTre
 public class Annotation implements Iterable<Lexel> {
 
 	public final static String ANNOTATION_TAG = "S0a2rHrOpF";
-	private final Integer mID;
+	private final String mID;
 	private final String mText;
 	private final List<Token[]> mTokens;
 	private final SortedSet<Lexel> mLexels;
 	private final List<DependencyTree> mDependencyTrees;
-
-	public Annotation(int id,String sentence) {
+	
+	public Annotation(String id,String sentence) {
 
 		this.mID=id;
 		this.mText = sentence;
@@ -140,7 +139,7 @@ public class Annotation implements Iterable<Lexel> {
 		return mLexels.iterator();
 	}
 
-	public Integer getID() {
+	public String getID() {
 	
 		return mID;
 	}
@@ -151,4 +150,17 @@ public class Annotation implements Iterable<Lexel> {
 		return this.mText;
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		
+		if(o instanceof Annotation)			
+			return this.getID().equals(((Annotation) o).getID());
+		
+		return false;
+	}
+
+	@Override
+	public int hashCode(){		
+		return Objects.hash(this.getID());
+	}
 }
