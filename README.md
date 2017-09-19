@@ -10,6 +10,7 @@ supWSD is a supervised word sense disambiguation system.  The flexible framework
 #### Trained Models
 Models available for download, based on different features and corpora. All models use WordNet 3.0 as sense inventory.
 The word embeddings used can be downloaded <a target="_blank" href="http://lcl.uniroma1.it/wsdeval/data/embeddings_skip_wackyen_400d.bin">here</a> [2.6GB].
+The vocab file can be downloaded <a target="_blank" href="">here</a>. [159MB]
 
 ##### training data: SemCor with Stanford CoreNLP as preprocessor 
 
