@@ -45,7 +45,8 @@ public abstract class XMLHandler extends DefaultHandler {
 	
 	protected String formatAnnotation(String text){
 				
-		return Annotation.ANNOTATION_TAG+text.trim()+Annotation.ANNOTATION_TAG;
+		return Annotation.ANNOTATION_TAG+text.replaceAll("\\.", "_").trim()+Annotation.ANNOTATION_TAG;
 	}
 	
+
 }
