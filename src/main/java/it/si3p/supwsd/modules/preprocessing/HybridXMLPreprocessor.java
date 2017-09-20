@@ -38,6 +38,7 @@ public class HybridXMLPreprocessor extends HybridPreprocessor {
 		if (words != null){
 			
 			tokens =getTokens(words, annotation.iterator());
+			
 			POS = POSTag(tokens);
 
 			if (POS != null)
@@ -60,7 +61,8 @@ public class HybridXMLPreprocessor extends HybridPreprocessor {
 		final int index,length;
 		final String tag = Annotation.ANNOTATION_TAG;
 		boolean start = false;
-
+		int offset=-1;
+		
 		index = tag.length();
 		length=words.length;
 		tokens = new String[length][];
@@ -81,17 +83,21 @@ public class HybridXMLPreprocessor extends HybridPreprocessor {
 					lexel = iterator.next();
 					lexel.setIndexes(i, sentence.size());
 					word = word.substring(index);
+					offset=0;
 				}
 
 				if (word.endsWith(tag)) {
-					
-					lexel.setOffset(i-lexel.getTokenIndex()-1);
+										
+					lexel.setOffset(offset);
 					start = false;
 					word = head + word.substring(0, word.length() - index);
+					offset=-1;
 				}
 
-				if (start)
+				if (start) {
 					head += word;
+					offset++;
+				}
 				else
 					sentence.add(word);
 			}
