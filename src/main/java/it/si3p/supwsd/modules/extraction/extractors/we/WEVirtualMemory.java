@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,12 +61,8 @@ public class WEVirtualMemory {
 
 		File file;
 		Map<String, Integer> vocab;
-		Path path;
 
-		path = Paths.get(mVectorsDir);
-
-		if (!Files.exists(path))
-			path.toFile().mkdir();
+		new File(mVectorsDir).mkdirs();
 
 		file = WEFileUtils.sortFile(mMemFile, "alpha", new WEAlphaComparator(mVectorSeparator));
 		WEFileUtils.splitFile(file, mKeysFile, mVectorsDir, mVectorSeparator, blockSize);

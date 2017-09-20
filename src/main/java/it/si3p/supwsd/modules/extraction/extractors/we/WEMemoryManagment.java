@@ -2,9 +2,6 @@ package it.si3p.supwsd.modules.extraction.extractors.we;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -54,11 +51,8 @@ public class WEMemoryManagment {
 
 	private int createVirtualMem(String vocabFile, float cacheSize) throws IOException {
 
-		Path path= Paths.get(MEM_DIR);
-
-		if (!Files.exists(path))
-			path.toFile().mkdir();
-
+		new File(MEM_DIR).mkdirs();
+		
 		if (cacheSize < 1) {
 
 			if (vocabFile == null)
