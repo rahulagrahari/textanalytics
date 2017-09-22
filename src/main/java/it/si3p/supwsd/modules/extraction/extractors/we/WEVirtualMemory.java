@@ -113,6 +113,9 @@ public class WEVirtualMemory {
 			}
 		}
 
+		if (unk  == null)
+			unk=new double[length];
+		
 		return unk;
 	}
 
