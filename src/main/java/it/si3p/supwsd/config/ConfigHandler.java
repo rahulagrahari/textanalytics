@@ -19,6 +19,7 @@ import it.si3p.supwsd.modules.parser.ParserType;
 import it.si3p.supwsd.modules.parser.xml.XMLHandler;
 import it.si3p.supwsd.modules.preprocessing.units.tokenizer.TokenizerType;
 import it.si3p.supwsd.modules.writer.WriterType;
+import it.si3p.supwsd.modules.preprocessing.pipeline.PipelineType;
 import it.si3p.supwsd.modules.preprocessing.units.dependencyParser.DependencyParserType;
 import it.si3p.supwsd.modules.preprocessing.units.lemmatizer.LemmatizerType;
 import it.si3p.supwsd.modules.preprocessing.units.splitter.SplitterType;
@@ -93,6 +94,11 @@ public class ConfigHandler extends XMLHandler {
 			this.mConfig.setClassifierType(getValue(ClassifierType.class));
 			break;
 
+		case PIPELINE:
+
+			this.mConfig.setPipeline(getValue(PipelineType.class),(String) getParam(String.class, ConfigAttribute.MODEL, true));
+			break;
+			
 		case SPLITTER:
 
 			this.mConfig.setSplitter(getValue(SplitterType.class),

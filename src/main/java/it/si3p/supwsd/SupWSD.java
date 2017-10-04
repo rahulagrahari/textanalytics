@@ -28,6 +28,8 @@ import it.si3p.supwsd.modules.preprocessing.Preprocessor;
 import it.si3p.supwsd.modules.preprocessing.StanfordPlainPreprocessor;
 import it.si3p.supwsd.modules.preprocessing.StanfordPreprocessor;
 import it.si3p.supwsd.modules.preprocessing.StanfordXMLPreprocessor;
+import it.si3p.supwsd.modules.preprocessing.pipeline.PipelineType;
+import it.si3p.supwsd.modules.preprocessing.pipeline.udpipe.UDPipeXMLPreprocessor;
 import it.si3p.supwsd.modules.preprocessing.units.dependencyParser.DependencyParserFactory;
 import it.si3p.supwsd.modules.preprocessing.units.dependencyParser.DependencyParserType;
 import it.si3p.supwsd.modules.preprocessing.units.dependencyParser.DependencyParser;
@@ -65,20 +67,24 @@ public class SupWSD {
 		senses = readSenses(keys);
 		config = Config.load(conf);
 		Serializer.setDirectory(config.getWorkingDir());
-		//Writer.setDirectory(config.getWorkingDir());
+		// Writer.setDirectory(config.getWorkingDir());
 		parserType = config.getParserType();
-		parser = ParserFactory.getInstance().getParser(parserType,false);
+		parser = ParserFactory.getInstance().getParser(parserType, false);
 		classifier = ClassifierFactory.getInstance().getClassifier(config.getClassifierType());
-		preprocessor = getPreprocessor(config.getSplitterType(), config.getTokenizerType(), config.getTaggerType(),
-				config.getLemmatizerType(), config.getDParserType(), config.getSplitterModel(),
-				config.getTokenizerModel(), config.getTaggerModel(), config.getLemmatizerModel(),
-				config.getDParserModel(), parserType);
+
+		if (config.getPipelineType() != null)
+			preprocessor = getPipeline(config.getPipelineType(), config.getPipelineModel());
+		else
+			preprocessor = getPreprocessor(config.getSplitterType(), config.getTokenizerType(), config.getTaggerType(),
+					config.getLemmatizerType(), config.getDParserType(), config.getSplitterModel(),
+					config.getTokenizerModel(), config.getTaggerModel(), config.getLemmatizerModel(),
+					config.getDParserModel(), parserType);
 
 		trainer = new Trainer(parser, preprocessor, config.getFeatureExtractors(), classifier, senses);
 		trainer.execute(corpus);
 	}
 
-	public static void test(String conf, String corpus, String keys) throws Exception  {
+	public static void test(String conf, String corpus, String keys) throws Exception {
 
 		Tester tester;
 		Config config;
@@ -98,12 +104,17 @@ public class SupWSD {
 		Serializer.setDirectory(config.getWorkingDir());
 		Writer.setDirectory(config.getWorkingDir());
 		parserType = config.getParserType();
-		parser = ParserFactory.getInstance().getParser(parserType,true);
+		parser = ParserFactory.getInstance().getParser(parserType, true);
 		mns = MNSFactory.getInstance().getMNS(config.getParserType(), config.getMNS());
-		preprocessor = getPreprocessor(config.getSplitterType(), config.getTokenizerType(), config.getTaggerType(),
-				config.getLemmatizerType(), config.getDParserType(), config.getSplitterModel(),
-				config.getTokenizerModel(), config.getTaggerModel(), config.getLemmatizerModel(),
-				config.getDParserModel(), parserType);
+
+		if (config.getPipelineType() != null)
+			preprocessor = getPipeline(config.getPipelineType(), config.getPipelineModel());
+		else
+			preprocessor = getPreprocessor(config.getSplitterType(), config.getTokenizerType(), config.getTaggerType(),
+					config.getLemmatizerType(), config.getDParserType(), config.getSplitterModel(),
+					config.getTokenizerModel(), config.getTaggerModel(), config.getLemmatizerModel(),
+					config.getDParserModel(), parserType);
+
 		classifier = ClassifierFactory.getInstance().getClassifier(config.getClassifierType());
 		writer = WriterFactory.getInstance().getWriter(config.getWriterType());
 		senseInventory = SenseInventoryFactory.getInstance().getSenseInventory(config.getSenseInventory(),
@@ -112,6 +123,14 @@ public class SupWSD {
 		tester = new Tester(parser, mns, preprocessor, config.getFeatureExtractors(), classifier, writer, senses,
 				senseInventory);
 		tester.execute(corpus);
+	}
+
+	private static Preprocessor getPipeline(PipelineType pipelineType, String pipelineModel) {
+
+		if (pipelineType.equals(PipelineType.UDPIPE))
+			return new UDPipeXMLPreprocessor(pipelineModel);
+
+		return null;
 	}
 
 	private static Preprocessor getPreprocessor(SplitterType splitterType, TokenizerType tokenizerType,
@@ -133,8 +152,7 @@ public class SupWSD {
 				&& (!lemma || (pos && lemmatizerType.equals(LemmatizerType.STANFORD)))
 				&& (!depparse || (pos && dependencyParserType.equals(DependencyParserType.STANFORD)))) {
 
-			preprocessor = getStanfordPreprocessor(split,pos,lemma,depparse,taggerModel,  dParserModel,
-					parserType);
+			preprocessor = getStanfordPreprocessor(split, pos, lemma, depparse, taggerModel, dParserModel, parserType);
 		} else {
 
 			preprocessor = getHybridPreprocessor(splitterType, tokenizerType, taggerType, lemmatizerType,
@@ -157,7 +175,7 @@ public class SupWSD {
 
 		if (taggerModel != null)
 			preprocessor.setPOSModel(taggerModel);
-		
+
 		if (dParserModel != null)
 			preprocessor.setDepparseSModel(dParserModel);
 
@@ -195,7 +213,7 @@ public class SupWSD {
 		return preprocessor;
 	}
 
-	private static Map<String, SortedSet<String>> readSenses(String keysFile) throws  IOException  {
+	private static Map<String, SortedSet<String>> readSenses(String keysFile) throws IOException {
 
 		Map<String, SortedSet<String>> keys;
 		final String regex = "\\s|\\t|\\n|\\r|\\f";
@@ -204,7 +222,7 @@ public class SupWSD {
 
 		keys = new HashMap<String, SortedSet<String>>();
 
-		try (BufferedReader keyReader = new BufferedReader(new InputStreamReader(new FileInputStream(keysFile)))){
+		try (BufferedReader keyReader = new BufferedReader(new InputStreamReader(new FileInputStream(keysFile)))) {
 
 			while ((line = keyReader.readLine()) != null) {
 
@@ -221,7 +239,6 @@ public class SupWSD {
 					senses.add(sense);
 				}
 
-				
 				keys.put(tokens[0], senses);
 			}
 

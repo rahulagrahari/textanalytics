@@ -34,19 +34,37 @@
 			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
+	<xs:simpleType name="pipelineType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="udpipe" />
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:element name="preprocessing">
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="splitter" />
-				<xs:element ref="tokenizer" />
-				<xs:element ref="tagger" />
-				<xs:element ref="lemmatizer" />
-				<xs:element ref="dependency_parser" />
-			</xs:sequence>
+			<xs:choice>
+				<xs:element ref="pipeline" />
+				<xs:sequence>
+					<xs:element ref="splitter" />
+					<xs:element ref="tokenizer" />
+					<xs:element ref="tagger" />
+					<xs:element ref="lemmatizer" />
+					<xs:element ref="dependency_parser" />
+				</xs:sequence>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="pipeline">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="pipelineType">
+					<xs:attribute name="model" />
+				</xs:extension>
+			</xs:simpleContent>
 		</xs:complexType>
 	</xs:element>
 	<xs:simpleType name="splitterType">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="udpipe" />
 			<xs:enumeration value="stanford" />
 			<xs:enumeration value="open_nlp" />
 			<xs:enumeration value="simple" />
@@ -64,6 +82,7 @@
 	</xs:element>
 	<xs:simpleType name="tokenizerType">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="udpipe" />
 			<xs:enumeration value="stanford" />
 			<xs:enumeration value="open_nlp" />
 			<xs:enumeration value="penn_tree_bank" />
@@ -82,10 +101,11 @@
 	</xs:element>
 	<xs:simpleType name="taggerType">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="udpipe" />
 			<xs:enumeration value="stanford" />
 			<xs:enumeration value="open_nlp" />
-				<xs:enumeration value="tree_tagger" />
-			<xs:enumeration value="simple" />			
+			<xs:enumeration value="tree_tagger" />
+			<xs:enumeration value="simple" />
 			<xs:enumeration value="none" />
 		</xs:restriction>
 	</xs:simpleType>
@@ -100,6 +120,7 @@
 	</xs:element>
 	<xs:simpleType name="lemmatizerType">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="udpipe" />
 			<xs:enumeration value="stanford" />
 			<xs:enumeration value="open_nlp" />
 			<xs:enumeration value="jwnl" />
@@ -169,7 +190,7 @@
 			<xs:simpleContent>
 				<xs:extension base="xs:boolean">
 					<xs:attribute name="cutoff" use="required" type="cutoffType" />
-						<xs:attribute name="sequences"  />
+					<xs:attribute name="sequences" />
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
@@ -183,7 +204,7 @@
 		<xs:complexType>
 			<xs:simpleContent>
 				<xs:extension base="xs:boolean">
-				<xs:attribute name="stopwords" />
+					<xs:attribute name="stopwords" />
 					<xs:attribute name="cutoff" use="required" type="cutoffType" />
 					<xs:attribute name="window" use="required" type="windowType" />
 				</xs:extension>

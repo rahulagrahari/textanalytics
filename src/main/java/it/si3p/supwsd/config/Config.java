@@ -14,6 +14,7 @@ import it.si3p.supwsd.inventory.SenseInventoryType;
 import it.si3p.supwsd.modules.classification.classifiers.ClassifierType;
 import it.si3p.supwsd.modules.extraction.extractors.FeatureExtractor;
 import it.si3p.supwsd.modules.parser.ParserType;
+import it.si3p.supwsd.modules.preprocessing.pipeline.PipelineType;
 import it.si3p.supwsd.modules.preprocessing.units.dependencyParser.DependencyParserType;
 import it.si3p.supwsd.modules.preprocessing.units.lemmatizer.LemmatizerType;
 import it.si3p.supwsd.modules.preprocessing.units.splitter.SplitterType;
@@ -34,6 +35,8 @@ public class Config {
 	private TaggerType mTaggerType;
 	private LemmatizerType mLemmatizerType;
 	private DependencyParserType mDParserType;
+	private PipelineType mPipelineType;
+	private String mPipelineModel;
 	private String mSplitterModel, mTokenizerModel, mTaggerModel, mLemmatizerModel, mDParserModel;
 	private WriterType mWriterType;
 	private SenseInventoryType mSenseInventory;
@@ -88,6 +91,16 @@ public class Config {
 		return mFeatureExtractors.toArray(new FeatureExtractor[mFeatureExtractors.size()]);
 	}
 
+	public String getPipelineModel() {
+
+		return this.mPipelineModel;
+	}
+	
+	public PipelineType getPipelineType() {
+
+		return this.mPipelineType;
+	}
+	
 	public SplitterType getSplitterType() {
 
 		return this.mSplitterType;
@@ -178,6 +191,12 @@ public class Config {
 		this.mFeatureExtractors.add(featureExtractor);
 	}
 
+	void setPipeline(PipelineType type, String model) {
+
+		this.mPipelineType = type;
+		this.mPipelineModel = model;
+	}
+	
 	void setSplitter(SplitterType type, String model) {
 
 		this.mSplitterType = type;

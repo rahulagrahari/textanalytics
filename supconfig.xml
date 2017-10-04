@@ -3,6 +3,7 @@
 	<working_directory></working_directory>
 	<parser mns=""></parser>
 	<preprocessing>
+		<!--<pipeline model=""></pipeline>-->	
 		<splitter model=""></splitter>
 		<tokenizer model=""></tokenizer>
 		<tagger model=""></tagger>
