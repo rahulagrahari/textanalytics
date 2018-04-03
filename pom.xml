@@ -89,6 +89,12 @@
 			<artifactId>liblinear</artifactId>
 			<version>1.95</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/it.uniroma1.dis.wsngroup.gexf4j/gexf4j -->
+		<dependency>
+		    <groupId>it.uniroma1.dis.wsngroup.gexf4j</groupId>
+		    <artifactId>gexf4j</artifactId>
+		    <version>0.4.3-BETA</version>
+		</dependency>
 
 	</dependencies>
 
